@@ -35,6 +35,8 @@ Stop the dev servers before running browser tests, which launch their own server
 
 ## Architecture
 
+See the [architecture](docs/architecture.md) for the request flow and deployment topology, and [technologies used](docs/technologies.md) for the implementation stack. The [experiments](docs/experiments.md) and [home solutions](docs/home-solutions.md) catalogs track activities and Fix-It procedures.
+
 - `web/src` contains the notebook screen, shared components and tokens, English and Hebrew catalogs, and the typed API client. The UI renders only reviewed procedure text for an approved policy decision.
 - `backend/homechem` contains the FastAPI routes, MCP transport, policy, LLM adapters, and telemetry. The LLM classifies inputs. Python independently evaluates the confirmed values and provides the rule and source.
 - `infra` contains the Dockerfiles, Caddy configuration, and Compose stack. Caddy serves the React assets and proxies the API and MCP endpoint over HTTPS.
