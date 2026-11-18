@@ -1,0 +1,24 @@
+{$PUBLIC_HOST} {
+	encode zstd gzip
+	handle /api/* {
+		request_body {
+			max_size 16KB
+		}
+		reverse_proxy api:8000
+	}
+	handle /mcp {
+		request_body {
+			max_size 64KB
+		}
+		reverse_proxy api:8000
+	}
+	handle {
+		root * /srv
+		@worker path /sw.js /index.html /
+		header @worker Cache-Control "no-cache"
+		@assets path /assets/*
+		header @assets Cache-Control "public, max-age=31536000, immutable"
+		try_files {path} /index.html
+		file_server
+	}
+}

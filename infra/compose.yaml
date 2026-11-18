@@ -1,0 +1,23 @@
+services:
+  api:
+    image: ${API_IMAGE:?}
+    env_file: runtime.env
+    environment:
+      LLM_PROVIDER: deepseek
+      RELEASE_SHA: ${RELEASE_SHA:?}
+      PUBLIC_HOST: ${PUBLIC_HOST:?}
+    restart: unless-stopped
+  web:
+    image: ${WEB_IMAGE:?}
+    environment:
+      PUBLIC_HOST: ${PUBLIC_HOST:?}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+volumes:
+  caddy_data:
+  caddy_config:

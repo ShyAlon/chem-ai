@@ -1,0 +1,43 @@
+name: Deploy
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      rollback_sha:
+        description: Previously deployed release commit SHA
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: homechem-production
+  cancel-in-progress: false
+jobs:
+  check:
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/ci.yml
+  production:
+    needs: check
+    if: always() && (needs.check.result == 'success' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      packages: write
+    env:
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+      DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+      DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+      DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+      DEPLOY_PLATFORM: ${{ vars.DEPLOY_PLATFORM }}
+      GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ROLLBACK_SHA: ${{ inputs.rollback_sha }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: docker/setup-qemu-action@v4
+        if: github.event_name == 'push' && vars.DEPLOY_PLATFORM == 'linux/arm64'
+      - uses: docker/setup-buildx-action@v4
+        if: github.event_name == 'push'
+      - run: scripts/release.sh

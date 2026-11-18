@@ -1,0 +1,76 @@
+:root {
+  color-scheme: light;
+  --paper: #f6f3ec;
+  --card: #fffdf7;
+  --ink: #252b25;
+  --muted: #586257;
+  --line: #d5d9cf;
+  --accent: #254c3c;
+  --wash: #e6efe1;
+  --warning: #7d4a26;
+  --radius: 16px;
+  font-family: "Instrument Sans", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, textarea { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: default; opacity: .58; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid #ad622c; outline-offset: 3px; }
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px max(5vw, calc((100vw - 1100px) / 2));
+  gap: 16px;
+  border-block-end: 1px solid var(--line);
+}
+.brand { display: flex; gap: 10px; align-items: center; font-size: 1.28rem; font-weight: 750; }
+.languages { display: flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; gap: 2px; }
+.languages button { border: 0; background: transparent; border-radius: inherit; padding: 7px 10px; color: var(--ink); }
+.languages button[aria-pressed="true"] { background: var(--accent); color: white; }
+
+main { width: min(1100px, 90%); margin-inline: auto; padding-block: clamp(40px, 7vw, 84px); }
+.hero { margin-block-end: 32px; }
+.eyebrow { color: var(--accent); font-size: .8rem; font-weight: 750; letter-spacing: .085em; text-transform: uppercase; }
+[dir="rtl"] .eyebrow { letter-spacing: 0; }
+h1 { font: 500 clamp(2.75rem, 7vw, 5.4rem)/1 "Instrument Serif", Georgia, serif; margin-block: 10px 14px; letter-spacing: -.055em; }
+[dir="rtl"] h1 { font-family: system-ui, sans-serif; font-weight: 650; letter-spacing: -.045em; }
+h2 { margin-block: 0 12px; font-size: 1.3rem; }
+h3 { font-size: 1rem; margin-block-end: 5px; }
+p { color: var(--muted); line-height: 1.55; }
+.hero p { font-size: 1.08rem; margin: 0; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1.95fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.panel { border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 3.5vw, 32px); }
+.notebook { background: var(--card); box-shadow: 0 12px 28px #2a352409; }
+label { display: block; font-weight: 700; margin-block-end: 10px; }
+textarea { color: var(--ink); width: 100%; display: block; border: 1px solid var(--line); border-radius: 10px; padding: 14px; background: #fffefb; resize: vertical; }
+textarea:placeholder-shown { direction: inherit; text-align: start; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-block-start: 14px; }
+.primary, .text-button { padding: 9px 0; font-weight: 650; }
+.primary { padding-inline: 15px; border: 1px solid var(--accent); border-radius: 8px; color: #fff; background: var(--accent); }
+.text-button { border: 0; color: var(--accent); background: transparent; text-decoration: underline; text-underline-offset: 3px; }
+.catalog { display: flex; flex-wrap: wrap; column-gap: 12px; row-gap: 5px; border-block-start: 1px solid var(--line); padding-block-start: 16px; margin-block-start: 24px; font-size: .88rem; color: var(--muted); }
+.confirmation, .decision, .notice { margin-block-start: 20px; padding: 16px; border-radius: 10px; background: var(--paper); }
+.decision.approved { border-inline-start: 4px solid var(--accent); background: var(--wash); }
+.decision.unverified, .notice { border-inline-start: 4px solid var(--warning); }
+.decision ol { padding-inline-start: 22px; }
+.decision li { margin-block: 6px; }
+.decision p { margin-block: 4px 0; }
+.evidence { background: #eff1e9; min-width: 0; }
+.evidence h2 { margin-block-start: 6px; }
+.evidence dl, .confirmation dl { margin: 0; }
+dt { color: var(--muted); font-size: .82rem; }
+dd { margin: 2px 0 10px; overflow-wrap: anywhere; }
+.request { margin-block-start: 16px; border-block-start: 1px solid var(--line); padding-block-start: 12px; }
+.request code { display: block; text-align: start; overflow-wrap: anywhere; font-size: .78rem; }
+
+@media (max-width: 720px) {
+  .layout { grid-template-columns: 1fr; }
+}
