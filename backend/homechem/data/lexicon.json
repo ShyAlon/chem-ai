@@ -1,0 +1,295 @@
+{
+  "objects": {
+    "tabletop": [
+      "table",
+      "tabletop",
+      "table top"
+    ],
+    "sink": [
+      "sink",
+      "basin"
+    ],
+    "screen": [
+      "screen",
+      "display",
+      "monitor"
+    ],
+    "shower": [
+      "shower",
+      "shower door"
+    ],
+    "window": [
+      "window"
+    ],
+    "mirror": [
+      "mirror"
+    ],
+    "countertop": [
+      "countertop",
+      "counter top",
+      "worktop",
+      "kitchen counter"
+    ],
+    "tile": [
+      "tile"
+    ],
+    "bathtub": [
+      "bathtub",
+      "bath tub"
+    ],
+    "toilet": [
+      "toilet",
+      "toilet bowl"
+    ],
+    "oven": [
+      "oven"
+    ],
+    "cooktop": [
+      "cooktop",
+      "stovetop"
+    ],
+    "floor": [
+      "floor",
+      "flooring",
+      "tile floor",
+      "tiled floor",
+      "floor tile"
+    ]
+  },
+  "object_categories": {
+    "cutlery": "cutlery.n.02"
+  },
+  "devices": {
+    "studio_display": [
+      "apple studio display",
+      "studio display"
+    ],
+    "iphone": [
+      "iphone",
+      "apple iphone"
+    ],
+    "iphone_duo": [
+      "iphone duo"
+    ],
+    "ipad": [
+      "ipad",
+      "ipad air",
+      "ipad mini",
+      "ipad pro"
+    ],
+    "android": [
+      "android"
+    ],
+    "macbook": [
+      "macbook",
+      "macbook pro",
+      "macbook air"
+    ],
+    "phone": [
+      "phone",
+      "smartphone"
+    ],
+    "laptop": [
+      "laptop",
+      "laptop computer",
+      "notebook computer"
+    ]
+  },
+  "finishes": {
+    "screen_protector": [
+      "screen protector",
+      "tempered glass protector"
+    ],
+    "standard_glass": [
+      "standard glass",
+      "regular glass",
+      "smooth glass"
+    ],
+    "glazed": [
+      "glazed"
+    ],
+    "uncoated": [
+      "uncoated"
+    ],
+    "unglazed": [
+      "unglazed",
+      "un glazed"
+    ],
+    "nano_texture": [
+      "nano texture",
+      "nanotexture"
+    ],
+    "coated": [
+      "coated",
+      "painted",
+      "tinted",
+      "film"
+    ],
+    "polished": [
+      "polished"
+    ],
+    "frosted": [
+      "frosted"
+    ]
+  },
+  "cleaning_supplies": {
+    "mop": [
+      "mop",
+      "microfiber mop",
+      "microfibre mop"
+    ],
+    "water": [
+      "water",
+      "warm water",
+      "tap water"
+    ],
+    "microfiber": [
+      "microfiber cloth",
+      "microfibre cloth"
+    ],
+    "dry_microfiber": [
+      "dry microfiber cloth",
+      "dry microfibre cloth"
+    ],
+    "soft_cloth": [
+      "soft cloth",
+      "soft cleaning cloth"
+    ],
+    "dish_soap": [
+      "mild dish soap",
+      "mild dishwashing liquid"
+    ],
+    "other": [
+      "bleach",
+      "chlorine bleach",
+      "ammonia",
+      "vinegar",
+      "baking soda",
+      "peroxide",
+      "rubbing alcohol",
+      "glass cleaner",
+      "window cleaner",
+      "all purpose cleaner",
+      "household cleaner",
+      "dishwasher detergent",
+      "dish soap",
+      "dishwashing liquid",
+      "soap"
+    ]
+  },
+  "exclusions": [
+    "cracked",
+    "chipped",
+    "broken",
+    "damaged"
+  ],
+  "cleaning_verbs": [
+    "clean",
+    "make clean",
+    "wash",
+    "wipe"
+  ],
+  "question_words": [
+    "a",
+    "an",
+    "and",
+    "are",
+    "available",
+    "best",
+    "can",
+    "clean",
+    "cleaning",
+    "could",
+    "damp",
+    "dirt",
+    "dirty",
+    "do",
+    "does",
+    "dust",
+    "dusty",
+    "everyday",
+    "fingerprints",
+    "for",
+    "from",
+    "gently",
+    "got",
+    "grime",
+    "have",
+    "how",
+    "i",
+    "is",
+    "it",
+    "made",
+    "make",
+    "my",
+    "need",
+    "of",
+    "off",
+    "on",
+    "only",
+    "our",
+    "please",
+    "routine",
+    "safely",
+    "should",
+    "smudges",
+    "that",
+    "the",
+    "this",
+    "to",
+    "use",
+    "using",
+    "want",
+    "wash",
+    "way",
+    "we",
+    "what",
+    "wipe",
+    "with",
+    "would",
+    "you"
+  ],
+  "supply_combinations": {
+    "dry_microfiber_only": [
+      [
+        "dry_microfiber"
+      ]
+    ],
+    "water_and_microfiber_only": [
+      [
+        "water",
+        "microfiber"
+      ]
+    ],
+    "water_and_mop_only": [
+      [
+        "water",
+        "mop"
+      ]
+    ],
+    "mild_dish_soap_water_and_soft_cloth": [
+      [
+        "water",
+        "soft_cloth",
+        "dish_soap"
+      ],
+      [
+        "water",
+        "microfiber",
+        "dish_soap"
+      ]
+    ]
+  },
+  "surface_descriptions": [
+    {
+      "object": "sink",
+      "material": "stainless_steel",
+      "term": "stainless_steel_sink"
+    },
+    {
+      "object": "shower",
+      "material": "glass",
+      "term": "shower_glass"
+    }
+  ]
+}

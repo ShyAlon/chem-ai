@@ -27,6 +27,7 @@ export function Evidence({ t, decision, requestId, interpretationId }: {
       {decision ? (
         <>
           {decision.source && <p><a href={decision.source.url} lang={decision.source.language}>{decision.source.title}</a><br /><small>{t.sourceLanguage}</small></p>}
+          {decision.chemistry_source && <p><a href={decision.chemistry_source.url} lang={decision.chemistry_source.language}>{decision.chemistry_source.title}</a></p>}
           <dl>
             <dt>{t.rule}</dt><dd><bdi>{decision.rule}</bdi></dd>
             <dt>{t.version}</dt><dd><bdi>{decision.version}</bdi></dd>
@@ -55,17 +56,15 @@ export function Evidence({ t, decision, requestId, interpretationId }: {
   );
 }
 
-export function DecisionCard({ t, decision }: { t: Messages; decision: Decision }) {
-  const approved = decision.status === 'approved' && decision.rule === 'studio_display_water_cleaning';
+export function DecisionCard({ t, decision, locale }: { t: Messages; decision: Decision; locale: Locale }) {
+  const procedure = decision.procedure?.[locale];
   return (
     <section className={`decision ${decision.status}`} aria-live="polite">
-      <h2>{approved ? t.approved : t.unverified}</h2>
-      {approved ? (
-        <>
-          <ol>{t.steps.map(step => <li key={step}>{step}</li>)}</ol>
-          <h3>{t.whyTitle}</h3><p>{t.why}</p>
-        </>
-      ) : <p>{t.outsideScope}</p>}
+      <h2>{procedure ? t.approved : t.unverified}</h2>
+      {procedure && <>
+        <ol>{procedure.steps.map(step => <li key={step}>{step}</li>)}</ol>
+        <h3>{t.whyTitle}</h3><p>{procedure.why}</p>
+      </>}
     </section>
   );
 }

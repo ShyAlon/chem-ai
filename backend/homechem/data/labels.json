@@ -1,0 +1,108 @@
+{
+  "en": {
+    "objects": {
+      "cutlery": "Cutlery",
+      "stainless_steel_sink": "Stainless steel sink",
+      "sink": "Sink",
+      "studio_display": "External display",
+      "shower_glass": "Shower glass",
+      "window": "Window",
+      "mirror": "Mirror",
+      "countertop": "Countertop",
+      "natural_stone": "Natural stone",
+      "tile": "Tile",
+      "bathtub": "Bathtub",
+      "toilet": "Toilet",
+      "screen": "Screen",
+      "oven": "Oven",
+      "cooktop": "Cooktop",
+      "wood": "Wood",
+      "floor": "Floor",
+      "tabletop": "Tabletop",
+      "shower": "Shower"
+    },
+    "devices": {
+      "laptop": "Laptop",
+      "iphone": "iPhone",
+      "iphone_duo": "iPhone Duo",
+      "ipad": "iPad",
+      "android": "Android",
+      "macbook": "MacBook",
+      "phone": "Phone"
+    },
+    "finishes": {
+      "standard_glass": "Standard glass",
+      "glazed": "Glazed",
+      "uncoated": "Uncoated",
+      "unglazed": "Unglazed",
+      "screen_protector": "Screen protector",
+      "nano_texture": "Nano-texture",
+      "coated": "Coated",
+      "polished": "Polished",
+      "frosted": "Frosted"
+    },
+    "supplies": {
+      "unknown": "Unverified",
+      "not_stated": "Not specified",
+      "dry_microfiber_only": "Dry microfiber cloth",
+      "water_and_microfiber_only": "Water and a microfiber cloth",
+      "water_and_mop_only": "Water and a clean mop",
+      "mild_dish_soap_water_and_soft_cloth": "Warm water, mild dish soap, and a soft cloth"
+    },
+    "outside_scope": "The catalog covers intact glass tabletops, smooth glass screens, and everyday cleaning of glazed ceramic surfaces.",
+    "screen_material": "Tell Fix-It what the exposed screen surface is made of and whether it has a special finish or protector."
+  },
+  "he": {
+    "objects": {
+      "cutlery": "סכו״ם",
+      "stainless_steel_sink": "כיור נירוסטה",
+      "sink": "כיור",
+      "studio_display": "מסך חיצוני",
+      "shower_glass": "זכוכית מקלחון",
+      "window": "חלון",
+      "mirror": "מראה",
+      "countertop": "משטח עבודה",
+      "natural_stone": "אבן טבעית",
+      "tile": "אריחים",
+      "bathtub": "אמבטיה",
+      "toilet": "אסלה",
+      "screen": "מסך",
+      "oven": "תנור",
+      "cooktop": "כיריים",
+      "wood": "עץ",
+      "floor": "רצפה",
+      "tabletop": "משטח שולחן",
+      "shower": "מקלחון"
+    },
+    "devices": {
+      "laptop": "מחשב נייד",
+      "iphone": "iPhone",
+      "iphone_duo": "iPhone Duo",
+      "ipad": "iPad",
+      "android": "Android",
+      "macbook": "MacBook",
+      "phone": "טלפון"
+    },
+    "finishes": {
+      "standard_glass": "זכוכית רגילה",
+      "glazed": "מזוגג",
+      "uncoated": "ללא ציפוי",
+      "unglazed": "ללא זיגוג",
+      "screen_protector": "מגן מסך",
+      "nano_texture": "ננו־טקסטורה",
+      "coated": "מצופה",
+      "polished": "מלוטש",
+      "frosted": "חלבי"
+    },
+    "supplies": {
+      "unknown": "לא אומת",
+      "not_stated": "לא צוינו",
+      "dry_microfiber_only": "מטלית מיקרופייבר יבשה",
+      "water_and_microfiber_only": "מים ומטלית מיקרופייבר",
+      "water_and_mop_only": "מים ומגב נקי",
+      "mild_dish_soap_water_and_soft_cloth": "מים חמימים, נוזל כלים עדין ומטלית רכה"
+    },
+    "outside_scope": "הקטלוג מכסה משטחי שולחן מזכוכית שלמה, מסכים מזכוכית חלקה וניקוי שגרתי של משטחי קרמיקה מזוגגים.",
+    "screen_material": "ציינו ממה עשוי המשטח החשוף של המסך ואם יש לו גימור מיוחד או מגן."
+  }
+}

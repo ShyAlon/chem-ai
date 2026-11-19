@@ -1,0 +1,398 @@
+[
+  {
+    "id": "stains",
+    "title": {
+      "en": "Stain removal",
+      "he": "הסרת כתמים"
+    },
+    "example": {
+      "en": "Fresh coffee on washable cotton",
+      "he": "קפה טרי על כותנה הניתנת לכביסה"
+    },
+    "steps": {
+      "en": [
+        "Check that the care label permits washing and test detergent on a hidden area.",
+        "Rinse the fresh stain promptly with cool water.",
+        "Pretreat with liquid laundry detergent following its label, then wash according to the fabric care label. Air dry and inspect before using heat."
+      ],
+      "he": [
+        "בדקו שתווית הבגד מתירה כביסה ובדקו את חומר הכביסה באזור נסתר.",
+        "שטפו את הכתם הטרי בהקדם במים קרירים.",
+        "טפלו בנוזל כביסה לפי התווית וכבסו לפי הוראות הבגד. ייבשו באוויר ובדקו את הכתם לפני חימום."
+      ]
+    },
+    "why": {
+      "en": "Water can carry away soluble coffee components. Detergent helps disperse oily residues, including those from added milk. Fabric dyes and finishes affect which treatments are suitable.",
+      "he": "מים מסלקים רכיבי קפה מסיסים. חומר כביסה עוזר לפזר שאריות שומניות, גם מחלב שנוסף לקפה. צבעים וגימורים בבד משפיעים על התאמת הטיפול."
+    },
+    "source": {
+      "url": "https://www.cleaninginstitute.org/cleaning-tips/clothes/stain-removal-guide",
+      "title": "American Cleaning Institute — stain removal"
+    },
+    "fields": [],
+    "submit": {
+      "en": "",
+      "he": ""
+    },
+    "calculation": null
+  },
+  {
+    "id": "food",
+    "title": {
+      "en": "Food science",
+      "he": "מדע המזון"
+    },
+    "example": {
+      "en": "Why does an oil-and-water dressing separate?",
+      "he": "למה רוטב שמן ומים נפרד?"
+    },
+    "steps": {
+      "en": [
+        "Shake oil and water in a closed food-safe container and observe.",
+        "Leave the container standing and compare the layers after a few minutes."
+      ],
+      "he": [
+        "נערו שמן ומים בכלי סגור המתאים למזון והתבוננו.",
+        "הניחו לכלי לעמוד והשוו את השכבות אחרי כמה דקות."
+      ]
+    },
+    "why": {
+      "en": "Shaking disperses one liquid as droplets in the other. Oil and water have limited mutual solubility, so droplets merge and separate. Emulsifiers can help stabilize the droplet interfaces.",
+      "he": "ניעור מפזר נוזל אחד כטיפות בתוך האחר. המסיסות ההדדית של שמן ומים מוגבלת ולכן הטיפות מתאחדות ונוצרות שכבות. חומרים מתחלבים יכולים לעזור לייצב את ממשק הטיפות."
+    },
+    "source": {
+      "url": "https://rockedu.rockefeller.edu/stem-activities/exploring-emulsion-chemistry/chem-emulsion/",
+      "title": "Rockefeller University — emulsion chemistry"
+    },
+    "fields": [],
+    "submit": {
+      "en": "",
+      "he": ""
+    },
+    "calculation": null
+  },
+  {
+    "id": "scale",
+    "title": {
+      "en": "Limescale and corrosion",
+      "he": "אבנית וקורוזיה"
+    },
+    "example": {
+      "en": "White deposits after heating hard water",
+      "he": "משקעים לבנים אחרי חימום מים קשים"
+    },
+    "steps": {
+      "en": [
+        "Compare the deposit with a water-hardness measurement or your water supplier’s report.",
+        "Use the appliance care instructions to select a compatible descaling process. Appearance alone cannot identify a deposit."
+      ],
+      "he": [
+        "השוו את המשקע למדידת קשיות המים או לדוח ספק המים.",
+        "בחרו תהליך הסרת אבנית המתאים להוראות תחזוקת המכשיר. מראה בלבד אינו מזהה את המשקע."
+      ]
+    },
+    "why": {
+      "en": "Heating hard water can promote calcium carbonate deposits. Corrosion is a different process involving reactions of the underlying material. A white deposit alone does not establish its composition.",
+      "he": "חימום מים קשים יכול לקדם שקיעת סידן פחמתי. קורוזיה כוללת תגובות של החומר שממנו עשוי הפריט. משקע לבן לבדו אינו מעיד בוודאות על הרכבו."
+    },
+    "source": {
+      "url": "https://www.usgs.gov/water-science-school/science/hardness-water",
+      "title": "USGS — hardness of water"
+    },
+    "fields": [],
+    "submit": {
+      "en": "",
+      "he": ""
+    },
+    "calculation": null
+  },
+  {
+    "id": "materials",
+    "title": {
+      "en": "Material care",
+      "he": "התאמת חומרים"
+    },
+    "example": {
+      "en": "Can a container hold acidic food?",
+      "he": "האם כלי מתאים למזון חומצי?"
+    },
+    "steps": {
+      "en": [
+        "Identify the food-contact material and its intended use.",
+        "For copper, galvanized metal, or ceramics with uncertain glaze composition, choose an intact container explicitly intended for acidic food.",
+        "Check temperature and reuse restrictions on food-contact containers."
+      ],
+      "he": [
+        "זהו את החומר הבא במגע עם המזון ואת השימוש המיועד לו.",
+        "לנחושת, מתכת מגולוונת או קרמיקה שהרכב הזיגוג שלה לא ידוע, בחרו כלי שלם המיועד במפורש למזון חומצי.",
+        "בדקו מגבלות טמפרטורה ושימוש חוזר בכלי מזון."
+      ]
+    },
+    "why": {
+      "en": "Acidic foods can react with some metals and increase migration of substances from unsuitable containers. Compatibility depends on composition, coatings, temperature, and contact time.",
+      "he": "מזון חומצי עשוי להגיב עם מתכות מסוימות ולהגביר מעבר חומרים מכלים שאינם מתאימים. ההתאמה תלויה בהרכב, בציפוי, בטמפרטורה ובמשך המגע."
+    },
+    "source": {
+      "url": "https://www.foodauthority.nsw.gov.au/help/food-packaging",
+      "title": "NSW Food Authority — food packaging"
+    },
+    "fields": [],
+    "submit": {
+      "en": "",
+      "he": ""
+    },
+    "calculation": null
+  },
+  {
+    "id": "water",
+    "title": {
+      "en": "Water chemistry",
+      "he": "כימיית מים"
+    },
+    "example": {
+      "en": "Interpret a water-hardness measurement",
+      "he": "פירוש מדידת קשיות מים"
+    },
+    "steps": {
+      "en": [
+        "Enter hardness in mg/L as CaCO₃.",
+        "Compare the classification with your water supplier’s report."
+      ],
+      "he": [
+        "הזינו קשיות ביחידות מ״ג לליטר כשווה ערך לסידן פחמתי.",
+        "השוו את הסיווג לדוח ספק המים."
+      ]
+    },
+    "why": {
+      "en": "Hardness mainly reflects dissolved calcium and magnesium. The value expressed as CaCO₃ is a reporting convention. Hardness alone cannot establish whether water is safe to drink.",
+      "he": "קשיות משקפת בעיקר סידן ומגנזיום מומסים. הערך כשווה ערך לסידן פחמתי הוא שיטת דיווח. קשיות לבדה אינה קובעת אם מים ראויים לשתייה."
+    },
+    "source": {
+      "url": "https://www.usgs.gov/water-science-school/science/hardness-water",
+      "title": "USGS — hardness of water"
+    },
+    "fields": [
+      {
+        "id": "hardness",
+        "label": {
+          "en": "Hardness (mg/L as CaCO₃)",
+          "he": "קשיות (מ״ג לליטר כשווה ערך לסידן פחמתי)"
+        },
+        "kind": "number",
+        "minimum": 0
+      }
+    ],
+    "submit": {
+      "en": "Result",
+      "he": "תוצאה"
+    },
+    "calculation": {
+      "kind": "classification",
+      "field": "hardness",
+      "thresholds": [
+        60,
+        120,
+        180
+      ],
+      "results": {
+        "en": [
+          "Soft",
+          "Moderately hard",
+          "Hard",
+          "Very hard"
+        ],
+        "he": [
+          "רכים",
+          "קשים במידה בינונית",
+          "קשים",
+          "קשים מאוד"
+        ]
+      }
+    }
+  },
+  {
+    "id": "experiments",
+    "title": {
+      "en": "Home experiments",
+      "he": "ניסויים בבית"
+    },
+    "example": {
+      "en": "Does stirring change sugar dissolving time?",
+      "he": "האם ערבוב משנה את זמן התמוססות הסוכר?"
+    },
+    "steps": {
+      "en": [
+        "Work with an adult. Use two clear cups with equal room-temperature water volumes and equal small amounts of sugar. Do not taste experiment materials.",
+        "Stir one cup and leave the other still. Keep temperature, sugar grain size, and observation method the same.",
+        "Measure seconds until visible grains disappear. Repeat trials and enter a pair of measurements below. Rinse the cups afterward."
+      ],
+      "he": [
+        "עבדו עם מבוגר. השתמשו בשתי כוסות שקופות עם כמויות זהות של מים בטמפרטורת החדר וכמויות קטנות וזהות של סוכר. אין לטעום חומרי ניסוי.",
+        "ערבבו כוס אחת והשאירו את האחרת ללא ערבוב. שמרו על טמפרטורה, גודל גרגרי סוכר ושיטת תצפית זהים.",
+        "מדדו שניות עד היעלמות הגרגרים. חזרו על הניסוי והזינו זוג מדידות בהמשך. שטפו את הכוסות בסיום."
+      ]
+    },
+    "why": {
+      "en": "Stirring moves dissolved sugar away from crystal surfaces and can speed dissolution. This comparison measures rate. A single trial cannot establish a general effect or measure equilibrium solubility.",
+      "he": "ערבוב מרחיק סוכר מומס מפני הגבישים ועשוי להאיץ התמוססות. ההשוואה מודדת קצב. מדידה יחידה אינה מוכיחה השפעה כללית ואינה מודדת מסיסות בשיווי משקל."
+    },
+    "source": {
+      "url": "https://www.acs.org/education/resources/k-8/inquiryinaction/fifth-grade/substances-have-characteristic-properties/lesson-2-1--using-dissolving-to-identify-substances.html",
+      "title": "American Chemical Society — dissolving experiments"
+    },
+    "fields": [
+      {
+        "id": "stirred",
+        "label": {
+          "en": "Stirred cup (seconds)",
+          "he": "כוס מעורבבת (שניות)"
+        },
+        "kind": "number",
+        "minimum": 0.001
+      },
+      {
+        "id": "still",
+        "label": {
+          "en": "Still cup (seconds)",
+          "he": "כוס ללא ערבוב (שניות)"
+        },
+        "kind": "number",
+        "minimum": 0.001
+      }
+    ],
+    "submit": {
+      "en": "Compare measurements",
+      "he": "השוואת מדידות"
+    },
+    "calculation": {
+      "kind": "ratio",
+      "numerator": "still",
+      "denominator": "stirred",
+      "templates": {
+        "en": "Unstirred time ÷ stirred time = {ratio}. Values above 1 mean the stirred cup dissolved faster in this trial.",
+        "he": "זמן ללא ערבוב חלקי זמן עם ערבוב = {ratio}. ערך מעל 1 מציין שהסוכר בכוס המעורבבת התמוסס מהר יותר בניסוי הזה."
+      }
+    }
+  },
+  {
+    "id": "labels",
+    "title": {
+      "en": "Product-label explanations",
+      "he": "הסבר רכיבי מוצרים"
+    },
+    "example": {
+      "en": "What do surfactants, enzymes, and builders do?",
+      "he": "מה תפקידם של פעילי שטח, אנזימים ובוני ניקוי?"
+    },
+    "steps": {
+      "en": [
+        "Choose an ingredient class below to see its function.",
+        "Follow the product label for dose and use. A functional class alone does not establish product compatibility."
+      ],
+      "he": [
+        "בחרו קבוצת רכיבים בהמשך כדי לראות את תפקידה.",
+        "פעלו לפי תווית המוצר לגבי מינון ושימוש. קבוצת רכיבים לבדה אינה קובעת התאמה של מוצר."
+      ]
+    },
+    "why": {
+      "en": "Formulations combine ingredients with different roles. Concentrations and the complete formulation determine performance.",
+      "he": "תכשירים משלבים רכיבים בעלי תפקידים שונים. הריכוזים וההרכב המלא קובעים את הביצועים."
+    },
+    "source": {
+      "url": "https://www.cleaninginstitute.org/understanding-products/about-cleaning-product-ingredients",
+      "title": "American Cleaning Institute — ingredient functions"
+    },
+    "fields": [
+      {
+        "id": "ingredient",
+        "kind": "select",
+        "label": {
+          "en": "Ingredient class",
+          "he": "קבוצת רכיבים"
+        },
+        "options": [
+          {
+            "id": "surfactants",
+            "label": {
+              "en": "Surfactants",
+              "he": "חומרים פעילי שטח"
+            }
+          },
+          {
+            "id": "enzymes",
+            "label": {
+              "en": "Enzymes",
+              "he": "אנזימים"
+            }
+          },
+          {
+            "id": "builders",
+            "label": {
+              "en": "Builders",
+              "he": "בוני ניקוי"
+            }
+          }
+        ]
+      }
+    ],
+    "submit": {
+      "en": "Explain ingredient",
+      "he": "הסבר על הרכיב"
+    },
+    "calculation": {
+      "kind": "lookup",
+      "field": "ingredient",
+      "values": {
+        "surfactants": {
+          "en": "Surfactants help water wet surfaces and disperse oily soil so it can be rinsed away.",
+          "he": "חומרים פעילי שטח עוזרים למים להרטיב משטחים ולפזר לכלוך שומני כך שאפשר לשטוף אותו."
+        },
+        "enzymes": {
+          "en": "Enzymes catalyze the breakdown of particular stains. Different enzymes target different substances, such as proteins or starch.",
+          "he": "אנזימים מזרזים פירוק של כתמים מסוימים. אנזימים שונים פועלים על חומרים שונים, כמו חלבונים או עמילן."
+        },
+        "builders": {
+          "en": "Builders improve cleaning performance by controlling hardness minerals such as calcium and magnesium.",
+          "he": "בוני ניקוי משפרים את הניקוי באמצעות טיפול במינרלים הגורמים לקשיות, כמו סידן ומגנזיום."
+        }
+      }
+    }
+  },
+  {
+    "id": "disposal",
+    "title": {
+      "en": "Chemical disposal",
+      "he": "פינוי חומרים כימיים"
+    },
+    "example": {
+      "en": "What should I do with leftover paint?",
+      "he": "מה עושים עם שאריות צבע?"
+    },
+    "steps": {
+      "en": [
+        "Read the label to identify the paint type and keep it in its original labeled container.",
+        "Keep different wastes separate. Do not pour hazardous household waste into drains, onto soil, or into storm sewers.",
+        "Contact your municipality or household hazardous waste service with the paint type and quantity for local collection instructions."
+      ],
+      "he": [
+        "קראו את התווית לזיהוי סוג הצבע ושמרו אותו במכל המקורי והמסומן.",
+        "שמרו פסולת מסוגים שונים בנפרד. אין לשפוך פסולת ביתית מסוכנת לביוב, לקרקע או לניקוז מי גשם.",
+        "פנו לרשות המקומית או לשירות פינוי פסולת מסוכנת עם סוג הצבע וכמותו לקבלת הוראות איסוף מקומיות."
+      ]
+    },
+    "why": {
+      "en": "Paint formulations may contain flammable solvents, pigments, and additives. Disposal depends on the formulation and local collection rules.",
+      "he": "צבע עשוי להכיל ממסים דליקים, פיגמנטים ותוספים. אופן הפינוי תלוי בהרכב ובהסדרי האיסוף המקומיים."
+    },
+    "source": {
+      "url": "https://www.epa.gov/hw/household-hazardous-waste-hhw",
+      "title": "US EPA — household hazardous waste"
+    },
+    "fields": [],
+    "submit": {
+      "en": "",
+      "he": ""
+    },
+    "calculation": null
+  }
+]

@@ -15,8 +15,8 @@ async def main():
             tools = await client.list_tools()
             assert "assess_cleaning" in {tool.name for tool in tools.tools}
             result = await client.call_tool("assess_cleaning", {"inputs": {
-                "surface": "studio_display_standard_glass",
-                "materials": "water_and_microfiber_only",
+                "surface": "glass_screen",
+                "materials": "dry_microfiber_only",
                 "confirmed": True,
             }})
             assert not result.isError and result.structuredContent["status"] == "approved"

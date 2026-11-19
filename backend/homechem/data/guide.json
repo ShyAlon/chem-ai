@@ -1,0 +1,98 @@
+{
+  "en": {
+    "title": "How does it work?",
+    "intro": "Fix-It turns a cleaning question into a set of details you can verify. It shows a procedure only when those details match a reviewed rule.",
+    "steps": [
+      {
+        "title": "Normalize the question",
+        "text": "Hebrew questions are translated into English first. Python then uses NLTK to normalize word forms and WordNet to recognize selected synonyms. English and translated questions follow the same checks."
+      },
+      {
+        "title": "Identify the object and what it’s made of",
+        "text": "The resolver looks for the object, surface material, finish, and cleaning supplies separately. It checks whether the words for the object and material are linked in the question. When it can tell that no supplies were named, it marks them as unspecified."
+      },
+      {
+        "title": "Handle unfamiliar surface wording",
+        "text": "When Fix-It recognizes a cleaning question but cannot identify the surface with its dictionary, a language model may suggest a surface. The cleaning supplies stay unverified, so that suggestion alone cannot unlock a procedure."
+      },
+      {
+        "title": "Confirm details and check the catalog",
+        "text": "You confirm the surface and supplies. The API calls the Python policy directly to check the confirmed combination against the reviewed catalog."
+      },
+      {
+        "title": "Show the procedure and its evidence",
+        "text": "A match shows the reviewed steps, the chemistry or physical mechanism, the source, and the policy version. An unverified result means the catalog has no reviewed procedure for the details provided. The request ID lets you look up the check in the logs."
+      }
+    ],
+    "exampleTitle": "A question, broken down",
+    "question": "I want to clean my ceramic floor",
+    "fields": [
+      [
+        "Object",
+        "Floor"
+      ],
+      [
+        "Surface material",
+        "Ceramic"
+      ],
+      [
+        "Finish",
+        "Unspecified"
+      ],
+      [
+        "Cleaning supplies",
+        "Unspecified"
+      ]
+    ],
+    "exampleResult": "Fix-It asks you to confirm intact glazed tiles and the use of water and a clean mop before showing the damp-mopping procedure.",
+    "back": "Back to Fix-It"
+  },
+  "he": {
+    "title": "איך זה עובד?",
+    "intro": "מחברת הפתרונות מפרקת את שאלת הניקוי לפרטים שאפשר לאמת. היא מציגה שיטה רק כשהפרטים תואמים לכלל שנבדק.",
+    "steps": [
+      {
+        "title": "מנרמלים את השאלה",
+        "text": "שאלות בעברית מתורגמות תחילה לאנגלית. פייתון משתמשת ב־NLTK לנרמול צורות מילים וב־WordNet לזיהוי מילים נרדפות נבחרות. שאלות באנגלית ושאלות מתורגמות עוברות אותן בדיקות."
+      },
+      {
+        "title": "מזהים את הפריט ואת החומר שממנו הוא עשוי",
+        "text": "המערכת מזהה בנפרד את הפריט, חומר המשטח, הגימור וחומרי הניקוי. היא בודקת שחומר המשטח אכן מתאר את הפריט. חומרי ניקוי שלא הוזכרו מסומנים כפרטים שלא צוינו."
+      },
+      {
+        "title": "מטפלים בניסוח לא מוכר של המשטח",
+        "text": "כשהמערכת מזהה שאלת ניקוי אך המילון לא מזהה את המשטח, מודל שפה יכול להציע זיהוי. חומרי הניקוי נשארים לא מאומתים, ולכן הצעת המודל לבדה אינה מספיקה להצגת שיטה."
+      },
+      {
+        "title": "מאשרים פרטים ובודקים את הקטלוג",
+        "text": "אתם מאשרים את המשטח ואת חומרי הניקוי. השרת קורא ישירות לפונקציית המדיניות בפייתון כדי לבדוק אם השילוב שאושר תואם שיטה שנבדקה."
+      },
+      {
+        "title": "מציגים את השיטה ואת המקור",
+        "text": "כשיש התאמה, המחברת מציגה את השלבים שנבדקו, את ההסבר הכימי או הפיזיקלי, את המקור ואת גרסת המדיניות. תוצאה שלא אומתה מציינת שהקטלוג אינו מכיל שיטה שנבדקה לפרטים שנמסרו. אפשר להשתמש במזהה הבקשה כדי למצוא את הבדיקה ביומנים."
+      }
+    ],
+    "exampleTitle": "כך מפרקים שאלה",
+    "question": "אני רוצה לנקות את רצפת הקרמיקה שלי",
+    "fields": [
+      [
+        "פריט",
+        "רצפה"
+      ],
+      [
+        "חומר המשטח",
+        "קרמיקה"
+      ],
+      [
+        "גימור",
+        "לא צוין"
+      ],
+      [
+        "חומרי ניקוי",
+        "לא צוינו"
+      ]
+    ],
+    "exampleResult": "המחברת מבקשת לאשר שהאריחים מזוגגים ושלמים ושתשתמשו במים ובמגב נקי. לאחר האישור היא מציגה את שיטת הניגוב הלח.",
+    "back": "חזרה למחברת הפתרונות"
+  }
+}

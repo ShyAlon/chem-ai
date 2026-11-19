@@ -28,5 +28,5 @@ function appShell() {
 
 export default defineConfig({
   plugins: [appShell()],
-  server: { proxy: { '/api': 'http://127.0.0.1:8000' } },
+  server: { proxy: { '/api': process.env.HOMECHEM_API_URL || 'http://127.0.0.1:8000' } },
 });

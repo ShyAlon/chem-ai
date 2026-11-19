@@ -1,0 +1,119 @@
+{
+  "title": {
+    "en": "Chemistry data lab",
+    "he": "מעבדת נתוני כימיה"
+  },
+  "intro": {
+    "en": "Explore compound data, source evidence, and reference measurements through MCP.",
+    "he": "חקרו נתוני תרכובות, מקורות ומדידות ייחוס באמצעות MCP."
+  },
+  "tools": [
+    {
+      "id": "compound",
+      "title": {
+        "en": "Compound lookup",
+        "he": "חיפוש תרכובות"
+      },
+      "description": {
+        "en": "Look up an English compound name or PubChem CID, for example water or 962.",
+        "he": "חפשו שם תרכובת באנגלית או מזהה PubChem, למשל water או 962."
+      },
+      "fields": [
+        {
+          "id": "query",
+          "kind": "text",
+          "label": {
+            "en": "Compound name or CID",
+            "he": "שם תרכובת או CID"
+          }
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "title": {
+        "en": "Chemistry evidence",
+        "he": "מקורות בכימיה"
+      },
+      "description": {
+        "en": "Search curated source summaries for surfactants, water hardness, or emulsions.",
+        "he": "חפשו סיכומי מקורות שנבחרו על פעילי שטח, קשיות מים או תחליבים."
+      },
+      "fields": [
+        {
+          "id": "query",
+          "kind": "text",
+          "label": {
+            "en": "Evidence query",
+            "he": "חיפוש מקורות"
+          }
+        }
+      ]
+    },
+    {
+      "id": "compare",
+      "title": {
+        "en": "Compare an experiment",
+        "he": "השוואת ניסוי"
+      },
+      "description": {
+        "en": "Measure the mass and volume of water at a listed temperature, then compare density with a published reference.",
+        "he": "מדדו מסה ונפח של מים בטמפרטורה מהרשימה והשוו את הצפיפות לנתון שפורסם."
+      },
+      "fields": [
+        {
+          "id": "mass_g",
+          "kind": "number",
+          "label": {
+            "en": "Water mass (g)",
+            "he": "מסת מים (גרם)"
+          }
+        },
+        {
+          "id": "volume_ml",
+          "kind": "number",
+          "label": {
+            "en": "Water volume (mL)",
+            "he": "נפח מים (מ״ל)"
+          }
+        },
+        {
+          "id": "reference_id",
+          "kind": "select",
+          "label": {
+            "en": "Water temperature",
+            "he": "טמפרטורת מים"
+          }
+        }
+      ]
+    }
+  ],
+  "labels": {
+    "en": {
+      "formula": "Molecular formula",
+      "weight": "Molecular weight",
+      "compound_note": "Compound identity and properties from PubChem. These describe the compound; material compatibility also depends on concentration, finish, and conditions.",
+      "comparison_title": "Water-density comparison",
+      "comparison_note": "Use water at the selected temperature and subtract the empty container mass. The signed difference compares one measurement with a published table; instrument uncertainty and dissolved substances affect the result. This comparison does not establish statistical significance.",
+      "temperature": "Reference temperature",
+      "measured": "Measured density",
+      "reference": "Reference density",
+      "difference": "Relative difference",
+      "unavailable": "The MCP data service could not resolve this request. Check the service or try a more specific compound name or CID.",
+      "invalid": "Check the input values and reference selection."
+    },
+    "he": {
+      "formula": "נוסחה מולקולרית",
+      "weight": "משקל מולקולרי",
+      "compound_note": "זהות ותכונות התרכובת מתוך PubChem. התאמת חומר תלויה גם בריכוז, בגימור ובתנאים.",
+      "comparison_title": "השוואת צפיפות מים",
+      "comparison_note": "השתמשו במים בטמפרטורה שנבחרה והפחיתו את מסת הכלי הריק. ההפרש משווה מדידה אחת לטבלה שפורסמה; אי־ודאות המדידה וחומרים מומסים משפיעים על התוצאה. ההשוואה אינה קובעת מובהקות סטטיסטית.",
+      "temperature": "טמפרטורת הייחוס",
+      "measured": "צפיפות שנמדדה",
+      "reference": "צפיפות ייחוס",
+      "difference": "הפרש יחסי",
+      "unavailable": "שירות נתוני MCP לא הצליח לפתור את הבקשה. בדקו את השירות או נסו שם תרכובת מדויק יותר או CID.",
+      "invalid": "בדקו את הערכים ואת בחירת נתון הייחוס."
+    }
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "evidence": [
+    {
+      "id": "surfactants",
+      "title": {
+        "en": "How surfactants remove oily soil",
+        "he": "איך פעילי שטח מסלקים לכלוך שומני"
+      },
+      "summary": {
+        "en": "Surfactants help water wet surfaces and disperse oily soil. Their affinity for both water and oil helps carry soil into the wash water.",
+        "he": "פעילי שטח עוזרים למים להרטיב משטחים ולפזר לכלוך שומני. הזיקה שלהם למים ולשמן מסייעת להעביר לכלוך למי השטיפה."
+      },
+      "keywords": [
+        "surfactant",
+        "surfactants",
+        "detergent",
+        "oil",
+        "grease",
+        "soap",
+        "פעילי שטח",
+        "שמן",
+        "שומן",
+        "סבון"
+      ],
+      "url": "https://www.cleaninginstitute.org/understanding-products/science-soap/chemistry-cleaning",
+      "publisher": "American Cleaning Institute"
+    },
+    {
+      "id": "hardness",
+      "title": {
+        "en": "Water hardness and heated-water deposits",
+        "he": "קשיות מים ומשקעים בחימום"
+      },
+      "summary": {
+        "en": "Water hardness mainly reflects dissolved calcium and magnesium. Heating hard water can lead to calcium carbonate deposits.",
+        "he": "קשיות מים משקפת בעיקר סידן ומגנזיום מומסים. חימום מים קשים יכול לגרום לשקיעת סידן פחמתי."
+      },
+      "keywords": [
+        "hardness",
+        "hard",
+        "water",
+        "calcium",
+        "carbonate",
+        "scale",
+        "limescale",
+        "אבנית",
+        "קשיות",
+        "מים",
+        "סידן"
+      ],
+      "url": "https://www.usgs.gov/water-science-school/science/hardness-water",
+      "publisher": "USGS"
+    },
+    {
+      "id": "emulsions",
+      "title": {
+        "en": "Oil-and-water emulsions",
+        "he": "תחליבי שמן ומים"
+      },
+      "summary": {
+        "en": "An emulsion disperses droplets of one liquid in another. Oil-and-water droplets can merge and separate; emulsifiers help stabilize their interfaces.",
+        "he": "תחליב מפזר טיפות של נוזל אחד באחר. טיפות שמן ומים עשויות להתאחד ולהיפרד; חומרים מתחלבים עוזרים לייצב את הממשק ביניהן."
+      },
+      "keywords": [
+        "emulsion",
+        "emulsions",
+        "oil",
+        "water",
+        "dressing",
+        "separate",
+        "תחליב",
+        "שמן",
+        "מים",
+        "רוטב"
+      ],
+      "url": "https://rockedu.rockefeller.edu/stem-activities/exploring-emulsion-chemistry/chem-emulsion/",
+      "publisher": "Rockefeller University"
+    }
+  ],
+  "references": [
+    {
+      "id": "water-density-10",
+      "substance": "Water",
+      "property": "Density",
+      "value": 0.99975,
+      "unit": "g/mL",
+      "temperature_c": 10.0,
+      "conditions": "Tabulated water density; match temperature and account for dissolved substances. Measurement uncertainty is not supplied by this educational table.",
+      "url": "https://www.usgs.gov/water-science-school/science/water-density",
+      "publisher": "USGS"
+    },
+    {
+      "id": "water-density-21",
+      "substance": "Water",
+      "property": "Density",
+      "value": 0.99802,
+      "unit": "g/mL",
+      "temperature_c": 21.0,
+      "conditions": "Tabulated water density; match temperature and account for dissolved substances. Measurement uncertainty is not supplied by this educational table.",
+      "url": "https://www.usgs.gov/water-science-school/science/water-density",
+      "publisher": "USGS"
+    },
+    {
+      "id": "water-density-26",
+      "substance": "Water",
+      "property": "Density",
+      "value": 0.99669,
+      "unit": "g/mL",
+      "temperature_c": 26.7,
+      "conditions": "Tabulated water density; match temperature and account for dissolved substances. Measurement uncertainty is not supplied by this educational table.",
+      "url": "https://www.usgs.gov/water-science-school/science/water-density",
+      "publisher": "USGS"
+    }
+  ],
+  "stop_words": [
+    "the",
+    "a",
+    "an",
+    "is",
+    "are",
+    "do",
+    "does",
+    "how",
+    "what",
+    "why",
+    "can",
+    "i",
+    "my",
+    "of",
+    "to",
+    "and",
+    "in",
+    "on",
+    "with",
+    "it",
+    "that",
+    "this",
+    "איך",
+    "מה",
+    "למה",
+    "של",
+    "את",
+    "זה",
+    "אני"
+  ]
+}

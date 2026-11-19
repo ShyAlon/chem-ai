@@ -1,0 +1,90 @@
+[
+  {
+    "id": "ceramic",
+    "labels": {
+      "en": "Ceramic",
+      "he": "קרמיקה"
+    },
+    "aliases": [
+      "ceramic",
+      "porcelain",
+      "fireclay"
+    ]
+  },
+  {
+    "id": "glass",
+    "labels": {
+      "en": "Glass",
+      "he": "זכוכית"
+    },
+    "aliases": [
+      "glass"
+    ]
+  },
+  {
+    "id": "stainless_steel",
+    "labels": {
+      "en": "Stainless Steel",
+      "he": "נירוסטה"
+    },
+    "aliases": [
+      "stainless steel",
+      "inox"
+    ]
+  },
+  {
+    "id": "natural_stone",
+    "labels": {
+      "en": "Natural Stone",
+      "he": "אבן טבעית"
+    },
+    "aliases": [
+      "marble",
+      "granite",
+      "natural stone"
+    ]
+  },
+  {
+    "id": "wood",
+    "labels": {
+      "en": "Wood",
+      "he": "עץ"
+    },
+    "aliases": [
+      "wood",
+      "wooden",
+      "hardwood"
+    ]
+  },
+  {
+    "id": "laminate",
+    "labels": {
+      "en": "Laminate",
+      "he": "למינציה"
+    },
+    "aliases": [
+      "laminate"
+    ]
+  },
+  {
+    "id": "vinyl",
+    "labels": {
+      "en": "Vinyl",
+      "he": "ויניל"
+    },
+    "aliases": [
+      "vinyl",
+      "vinyl plank"
+    ]
+  },
+  {
+    "id": "concrete",
+    "labels": {
+      "en": "Concrete",
+      "he": "בטון"
+    },
+    "aliases": [
+      "concrete"
+    ]
+  }
+]

@@ -1,10 +1,10 @@
 # HomeChem experiments
 
-This catalog tracks activities for the planned Kids Experiments mode. The initial audience is children ages 6–12 working with an adult. The entries below are drafts for review. The current app has no experiment mode.
+This catalog tracks activities for the planned Kids Experiments mode. The initial audience is children ages 6–12 working with an adult. The stirring comparison is available in the Home experiments workspace with bilingual instructions and a backend calculator for paired dissolving times. Instructions are based on the catalog below. A physical trial run remains pending. The salt-and-sand activity remains a draft.
 
 | Activity | Chemistry concept | Status |
 | --- | --- | --- |
-| [How stirring changes dissolving time](#how-stirring-changes-dissolving-time) | Dissolution rate | Draft |
+| [How stirring changes dissolving time](#how-stirring-changes-dissolving-time) | Dissolution rate | Implemented; physical trial pending |
 | [Which grains dissolve in water](#which-grains-dissolve-in-water) | Qualitative solubility | Draft |
 
 ## How stirring changes dissolving time
@@ -30,3 +30,7 @@ This catalog tracks activities for the planned Kids Experiments mode. The initia
 ## Adding an activity
 
 Record the question, target age, tested duration, adult role, materials, method, expected observation, chemistry explanation, cleanup, and sources. Before marking an activity ready for publication, record a trial run and review the English and Hebrew instructions. Add the implementation link when the activity becomes available in the app.
+
+## Reference-measurement comparison
+
+The Data lab includes a water-density comparison. Measure water mass after subtracting the container mass and measure the water volume at a listed temperature. The backend computes density in g/mL and signed relative difference from the selected USGS reference. Initial temperatures are 10, 21, and 26.7 °C. The measurement reference is retrieved through the MCP data service, and the activity timeline shows retrieval and calculation. The result includes the source and measurement caveats. [USGS water-density reference](https://www.usgs.gov/water-science-school/science/water-density)

@@ -2,26 +2,30 @@ from enum import StrEnum
 
 from pydantic import BaseModel, ConfigDict
 
+from .definitions import PROCEDURE_DEFINITIONS, EvidenceSource as Source, ProcedureContent
+
 
 class Surface(StrEnum):
-    STANDARD = "studio_display_standard_glass"
+    CERAMIC_TILE_FLOOR = "ceramic_tile_floor"
+    CERAMIC_SINK = "ceramic_sink"
+    GLASS_SCREEN = "glass_screen"
+    GLASS_TABLE = "glass_tabletop"
     UNKNOWN = "unknown"
 
 
 class Materials(StrEnum):
+    DISH_SOAP_AND_CLOTH = "mild_dish_soap_water_and_soft_cloth"
+    DRY_MICROFIBER = "dry_microfiber_only"
+    NOT_STATED = "not_stated"
+    WATER_AND_MOP = "water_and_mop_only"
     WATER_AND_CLOTH = "water_and_microfiber_only"
     UNKNOWN = "unknown"
 
 
-class Locale(StrEnum):
-    EN = "en"
-    HE = "he"
-
-
 class Interpretation(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    surface: Surface
-    materials: Materials
+    surface: str
+    materials: str
 
 
 class AssessmentInput(Interpretation):
@@ -33,35 +37,27 @@ class Status(StrEnum):
     UNVERIFIED = "unverified"
 
 
-class Source(BaseModel):
-    title: str
-    url: str
-    language: Locale
-
-
 class Decision(BaseModel):
     status: Status
     rule: str
     version: str
     source: Source | None = None
+    chemistry_source: Source | None = None
+    procedure: dict[str, ProcedureContent] | None = None
 
 
-POLICY_VERSION = "2026-11-18.1"
-DISPLAY_SOURCE = Source(
-    title="Clean the Studio Display",
-    url="https://support.apple.com/en-gb/guide/studio-display/apd1cf09caf2/2026/mac/27",
-    language=Locale.EN,
-)
+POLICY_VERSION = "2026-11-18.8"
+PROCEDURES = {(entry.surface, entry.supplies): entry for entry in PROCEDURE_DEFINITIONS}
+PROCEDURES_BY_SURFACE = {entry.surface: entry for entry in PROCEDURE_DEFINITIONS}
 
 
 def assess(inputs: AssessmentInput) -> Decision:
     if not inputs.confirmed:
         return Decision(status=Status.UNVERIFIED, rule="confirmation_required", version=POLICY_VERSION)
-    if inputs.surface != Surface.STANDARD or inputs.materials != Materials.WATER_AND_CLOTH:
+    procedure = PROCEDURES.get((inputs.surface, inputs.materials))
+    if procedure is None:
         return Decision(status=Status.UNVERIFIED, rule="outside_reviewed_scope", version=POLICY_VERSION)
     return Decision(
-        status=Status.APPROVED,
-        rule="studio_display_water_cleaning",
-        version=POLICY_VERSION,
-        source=DISPLAY_SOURCE,
+        status=Status.APPROVED, rule=procedure.id, version=POLICY_VERSION,
+        source=procedure.source, chemistry_source=procedure.chemistry_source, procedure=procedure.content,
     )

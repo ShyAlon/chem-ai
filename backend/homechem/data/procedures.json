@@ -1,0 +1,175 @@
+[
+  {
+    "id": "ceramic_sink_dish_soap_cleaning",
+    "surface": "ceramic_sink",
+    "object": "sink",
+    "material": "ceramic",
+    "finishes": [
+      null,
+      "glazed"
+    ],
+    "supplies": "mild_dish_soap_water_and_soft_cloth",
+    "source": {
+      "title": "Ohio History Connection glass and ceramics care",
+      "url": "https://www.ohiohistory.org/historic-housekeeping-glass-and-ceramics/",
+      "language": "en"
+    },
+    "chemistry_source": {
+      "title": "American Cleaning Institute chemistry of cleaning",
+      "url": "https://www.cleaninginstitute.org/understanding-products/science-soap/chemistry-cleaning",
+      "language": "en"
+    },
+    "content": {
+      "en": {
+        "title": "Glazed ceramic sink",
+        "confirmation": "Confirm that the sink has an intact ceramic glaze and that its care instructions allow mild dish soap.",
+        "accept": "I will use warm water, mild dish soap, and a soft cloth",
+        "steps": [
+          "Wipe the basin with a soft cloth, warm water, and mild dish soap.",
+          "Rinse the basin thoroughly with clean water.",
+          "Dry with a clean, soft cloth."
+        ],
+        "why": "Dish detergent contains surfactants. Their oil-attracting parts associate with grease and their water-attracting parts help keep it dispersed so rinsing carries it away. Rinsing also removes detergent residue.",
+        "hint": "How do I clean my glazed ceramic sink with warm water, mild dish soap, and a soft cloth?"
+      },
+      "he": {
+        "title": "כיור קרמי מזוגג",
+        "confirmation": "אשרו שזיגוג הכיור שלם ושהוראות היצרן מתירות שימוש בנוזל כלים עדין.",
+        "accept": "אשתמש במים חמימים, בנוזל כלים עדין ובמטלית רכה",
+        "steps": [
+          "נגבו את אגן הכיור במטלית רכה עם מים חמימים ונוזל כלים עדין.",
+          "שטפו היטב את אגן הכיור במים נקיים.",
+          "ייבשו במטלית נקייה ורכה."
+        ],
+        "why": "נוזל כלים מכיל חומרים פעילי שטח. החלק שנמשך לשומן נצמד ללכלוך שומני והחלק שנמשך למים עוזר לפזר אותו במים. השטיפה מסלקת את הלכלוך ואת שאריות נוזל הכלים.",
+        "hint": "איך מנקים כיור קרמי מזוגג עם מים חמימים, נוזל כלים עדין ומטלית רכה?"
+      }
+    }
+  },
+  {
+    "id": "glass_table_water_cleaning",
+    "surface": "glass_tabletop",
+    "object": "tabletop",
+    "material": "glass",
+    "finishes": [
+      null,
+      "uncoated"
+    ],
+    "supplies": "water_and_microfiber_only",
+    "source": {
+      "title": "Documentary Heritage and Preservation Services cleaning guide",
+      "url": "https://dhpsny.org/blog/dhps-tips-recommended-cleaning-products-collections-spaces",
+      "language": "en"
+    },
+    "chemistry_source": null,
+    "content": {
+      "en": {
+        "title": "Glass tabletop",
+        "confirmation": "Confirm that the glass is intact and uncoated.",
+        "accept": "I will use only water and a microfiber cloth",
+        "steps": [
+          "Lightly dampen a clean microfiber cloth with water and wipe the glass.",
+          "Dry the tabletop with a clean, dry cloth."
+        ],
+        "why": "Polar water dissolves some residues, such as salts. Drying removes droplets before evaporation can leave the dissolved minerals behind as spots.",
+        "hint": "How do I clean my glass tabletop with water and a microfiber cloth?"
+      },
+      "he": {
+        "title": "משטח שולחן מזכוכית",
+        "confirmation": "אשרו שהזכוכית שלמה וללא ציפוי.",
+        "accept": "אשתמש רק במים ובמטלית מיקרופייבר",
+        "steps": [
+          "הרטיבו קלות מטלית מיקרופייבר נקייה במים ונגבו את הזכוכית.",
+          "ייבשו את משטח השולחן במטלית נקייה ויבשה."
+        ],
+        "why": "מים קוטביים ממיסים חלק מהשאריות, למשל מלחים. ניגוב יבש מסלק טיפות לפני שהאידוי משאיר אחריהן כתמי מינרלים.",
+        "hint": "איך מנקים שולחן זכוכית עם מים ומטלית מיקרופייבר?"
+      }
+    }
+  },
+  {
+    "id": "glass_screen_dry_cleaning",
+    "surface": "glass_screen",
+    "object": "screen",
+    "material": "glass",
+    "finishes": [
+      null,
+      "standard_glass",
+      "uncoated"
+    ],
+    "supplies": "dry_microfiber_only",
+    "source": {
+      "title": "American Cleaning Institute screen care",
+      "url": "https://www.cleaninginstitute.org/cleaning-tips/work/clean-desk-computer",
+      "language": "en"
+    },
+    "chemistry_source": null,
+    "content": {
+      "en": {
+        "title": "Smooth glass screen",
+        "confirmation": "Confirm the exposed surface is intact, smooth glass without a protector or special finish.",
+        "accept": "I will use a clean, dry microfiber cloth",
+        "steps": [
+          "Turn off the device and disconnect its power.",
+          "Gently lift loose dust with a clean, dry microfiber cloth using light pressure."
+        ],
+        "why": "The fibers pick up loose particles by contact. A dry cloth adds no liquid that could wick into the electronics and no solvent that could affect the surface finish.",
+        "hint": "How do I clean my smooth glass screen with a dry microfiber cloth?"
+      },
+      "he": {
+        "title": "מסך זכוכית חלקה",
+        "confirmation": "אשרו שהמשטח החשוף עשוי זכוכית חלקה ושלמה, ללא מגן או גימור מיוחד.",
+        "accept": "אשתמש במטלית מיקרופייבר נקייה ויבשה",
+        "steps": [
+          "כבו את המכשיר ונתקו אותו ממקור החשמל.",
+          "אספו אבק רופף במטלית מיקרופייבר נקייה ויבשה, בלחץ קל."
+        ],
+        "why": "הסיבים אוספים חלקיקים במגע. מטלית יבשה אינה מוסיפה נוזל שעלול לחדור לרכיבים או ממס שעלול להשפיע על הגימור.",
+        "hint": "איך מנקים מסך זכוכית חלקה במטלית מיקרופייבר יבשה?"
+      }
+    }
+  },
+  {
+    "id": "ceramic_floor_water_mopping",
+    "surface": "ceramic_tile_floor",
+    "object": "floor",
+    "material": "ceramic",
+    "finishes": [
+      null,
+      "glazed"
+    ],
+    "supplies": "water_and_mop_only",
+    "source": {
+      "title": "Porcelain and ceramic tile care",
+      "url": "https://www.arizonatile.com/resources/care-maintenance/care-maintenance-for-porcelain-and-ceramic/",
+      "language": "en"
+    },
+    "chemistry_source": null,
+    "content": {
+      "en": {
+        "title": "Glazed ceramic tile floor",
+        "confirmation": "Confirm that the floor is intact glazed ceramic tile and its care instructions allow damp mopping.",
+        "accept": "I will use only water and a clean mop",
+        "steps": [
+          "Sweep up loose dirt and grit.",
+          "Damp-mop the tiles with clean water and a well-wrung mop.",
+          "Remove any standing water and let the floor dry."
+        ],
+        "why": "Sweeping removes gritty particles that can abrade the glaze. Water dissolves some polar residues, and the damp mop picks up remaining particles.",
+        "hint": "How do I clean my glazed ceramic tile floor with water and a mop?"
+      },
+      "he": {
+        "title": "רצפת אריחי קרמיקה מזוגגים",
+        "confirmation": "אשרו שהרצפה עשויה אריחי קרמיקה מזוגגים ושלמים ושהוראות התחזוקה מתירות ניגוב לח.",
+        "accept": "אשתמש רק במים ובמגב נקי",
+        "steps": [
+          "טאטאו לכלוך וגרגרים חופשיים.",
+          "נגבו את האריחים במגב סחוט היטב שהורטב במים נקיים.",
+          "סלקו שלוליות והניחו לרצפה להתייבש."
+        ],
+        "why": "טאטוא מסלק גרגרים שעלולים לשחוק את הזיגוג. המים ממיסים חלק מהשאריות הקוטביות והמגב הלח אוסף חלקיקים שנותרו.",
+        "hint": "איך מנקים רצפת אריחי קרמיקה מזוגגים עם מים ומגב?"
+      }
+    }
+  }
+]

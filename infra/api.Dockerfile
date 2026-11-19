@@ -4,6 +4,8 @@ COPY --from=uv /uv /usr/local/bin/uv
 WORKDIR /app
 COPY backend/pyproject.toml backend/uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
+COPY scripts/download-nlp-data.sh ./scripts/download-nlp-data.sh
+RUN bash scripts/download-nlp-data.sh /app/.venv/bin/python /app/.nltk-data
 COPY backend/homechem ./homechem
 RUN useradd --system --uid 10001 homechem
 USER homechem

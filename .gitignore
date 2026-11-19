@@ -5,6 +5,7 @@
 __pycache__/
 .pytest_cache/
 .cache/
+.nltk-data/
 node_modules/
 dist/
 test-results/

@@ -4,6 +4,176 @@
  */
 
 export interface paths {
+    "/api/management/catalog": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Catalog */
+        get: operations["management_catalog"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/management/validate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Validate Catalog */
+        post: operations["management_validate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/management/validate-procedures": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Validate Procedures */
+        post: operations["management_validate_procedures"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/management/resolve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Debug Resolution */
+        post: operations["management_resolve"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Application Catalog */
+        get: operations["application_catalog"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hints": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Hints */
+        get: operations["question_hints"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scenarios/{scenario_id}/evaluate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Evaluate */
+        post: operations["evaluate_scenario"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/activities/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Trace */
+        get: operations["activity_trace"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/research/catalog": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Catalog */
+        get: operations["research_catalog"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/research/{tool}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Evaluate */
+        post: operations["research_evaluate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/health": {
         parameters: {
             query?: never;
@@ -59,12 +229,118 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** @enum {string} */
+        ActivityKind: "model" | "translation" | "normalization" | "policy" | "calculation" | "mcp" | "cache" | "retrieval";
+        /** ActivityRecord */
+        ActivityRecord: {
+            /** Id */
+            id: string;
+            /** Parent Id */
+            parent_id?: string | null;
+            /** Name */
+            name: string;
+            kind: components["schemas"]["ActivityKind"];
+            /**
+             * Status
+             * @default running
+             * @enum {string}
+             */
+            status: "success" | "error" | "running";
+            /** Started Ms */
+            started_ms: number;
+            /**
+             * Duration Ms
+             * @default 0
+             */
+            duration_ms: number;
+            /** Details */
+            details?: {
+                [key: string]: string | number | boolean | null;
+            };
+        };
+        /** ActivityTrace */
+        ActivityTrace: {
+            /** Request Id */
+            request_id: string;
+            /** Trace Id */
+            trace_id: string | null;
+            /** Duration Ms */
+            duration_ms: number;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "running" | "success" | "error";
+            /** Activities */
+            activities: components["schemas"]["ActivityRecord"][];
+        };
+        /** ApplicationCatalog */
+        ApplicationCatalog: {
+            /** Messages */
+            messages: {
+                [key: string]: {
+                    [key: string]: string;
+                };
+            };
+            /** Management Messages */
+            management_messages: {
+                [key: string]: {
+                    [key: string]: string;
+                };
+            };
+            example_text: components["schemas"]["Text"];
+            /** Procedures */
+            procedures: {
+                [key: string]: components["schemas"]["ProcedureContent"];
+            }[];
+            /** Scenarios */
+            scenarios: components["schemas"]["ScenarioView"][];
+            /** Guide */
+            guide: {
+                [key: string]: components["schemas"]["GuideView"];
+            };
+        };
         /** AssessmentInput */
         AssessmentInput: {
-            surface: components["schemas"]["Surface"];
-            materials: components["schemas"]["Materials"];
+            /** Surface */
+            surface: string;
+            /** Materials */
+            materials: string;
             /** Confirmed */
             confirmed: boolean;
+        };
+        /** AssessmentPayload */
+        AssessmentPayload: {
+            /** Surface */
+            surface: string;
+            /** Materials */
+            materials: string;
+            /**
+             * Confirmed
+             * @default true
+             */
+            confirmed: boolean;
+        };
+        /** Classification */
+        Classification: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "classification";
+            /** Field */
+            field: string;
+            /** Thresholds */
+            thresholds: number[];
+            /** Results */
+            results: {
+                [key: string]: string[];
+            };
+        };
+        /** DebugInput */
+        DebugInput: {
+            /** Text */
+            text: string;
         };
         /** Decision */
         Decision: {
@@ -73,51 +349,426 @@ export interface components {
             rule: string;
             /** Version */
             version: string;
-            source?: components["schemas"]["Source"] | null;
+            source?: components["schemas"]["EvidenceSource"] | null;
+            chemistry_source?: components["schemas"]["EvidenceSource"] | null;
+            /** Procedure */
+            procedure?: {
+                [key: string]: components["schemas"]["ProcedureContent"];
+            } | null;
+        };
+        /** DisplayField */
+        DisplayField: {
+            /** Label */
+            label: string;
+            /** Value */
+            value: string;
+        };
+        /** EvidenceSource */
+        EvidenceSource: {
+            /** Title */
+            title: string;
+            /** Url */
+            url: string;
+            /**
+             * Language
+             * @enum {string}
+             */
+            language: "en" | "he";
+        };
+        /** GuideStep */
+        GuideStep: {
+            /** Title */
+            title: string;
+            /** Text */
+            text: string;
+        };
+        /** GuideView */
+        GuideView: {
+            /** Title */
+            title: string;
+            /** Intro */
+            intro: string;
+            /** Steps */
+            steps: components["schemas"]["GuideStep"][];
+            /** Exampletitle */
+            exampleTitle: string;
+            /** Question */
+            question: string;
+            /** Fields */
+            fields: string[][];
+            /** Exampleresult */
+            exampleResult: string;
+            /** Back */
+            back: string;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** InputField */
+        InputField: {
+            /** Id */
+            id: string;
+            label: components["schemas"]["Text"];
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "text" | "number" | "select";
+            /** Minimum */
+            minimum?: number | null;
+            /** Maximum */
+            maximum?: number | null;
+            /** Max Length */
+            max_length?: number | null;
+            /** Options */
+            options?: components["schemas"]["InputOption"][];
+        };
+        /** InputOption */
+        InputOption: {
+            /** Id */
+            id: string;
+            label: components["schemas"]["Text"];
+        };
         /** InterpretInput */
         InterpretInput: {
             /** Text */
             text: string;
         };
-        /** Interpretation */
-        Interpretation: {
-            surface: components["schemas"]["Surface"];
-            materials: components["schemas"]["Materials"];
+        /** InterpretResult */
+        InterpretResult: {
+            /** Surface */
+            surface: string;
+            /** Materials */
+            materials: string;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "dictionary" | "model";
+            /** Surface Term */
+            surface_term: string | null;
+            /** Object Type */
+            object_type?: string | null;
+            /** Device */
+            device?: string | null;
+            /** Substrate */
+            substrate?: string | null;
+            /** Finish */
+            finish?: string | null;
+            /** Translated Text */
+            translated_text?: string | null;
+            /** Translation Provider */
+            translation_provider?: string | null;
+            /** Presentation */
+            presentation?: {
+                [key: string]: components["schemas"]["ReviewView"];
+            };
         };
-        /**
-         * Locale
-         * @enum {string}
-         */
-        Locale: "en" | "he";
-        /**
-         * Materials
-         * @enum {string}
-         */
-        Materials: "water_and_microfiber_only" | "unknown";
-        /** Source */
-        Source: {
+        /** @enum {string} */
+        Language: "en" | "he";
+        /** Lookup */
+        Lookup: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "lookup";
+            /** Field */
+            field: string;
+            /** Values */
+            values: {
+                [key: string]: components["schemas"]["Text"];
+            };
+        };
+        /** ManagementCatalog */
+        ManagementCatalog: {
+            /** Debug Example */
+            debug_example: string;
+            /** Materials */
+            materials: components["schemas"]["MaterialDefinition"][];
+            /** Objects */
+            objects: {
+                [key: string]: string[];
+            };
+            /** Object Categories */
+            object_categories: {
+                [key: string]: string[];
+            };
+            /** Devices */
+            devices: {
+                [key: string]: string[];
+            };
+            /** Finishes */
+            finishes: {
+                [key: string]: string[];
+            };
+            /** Cleaning Supplies */
+            cleaning_supplies: {
+                [key: string]: string[];
+            };
+            /** Exclusions */
+            exclusions: string[];
+            /** Cleaning Verbs */
+            cleaning_verbs: string[];
+            /** Question Words */
+            question_words: string[];
+            /** Supply Combinations */
+            supply_combinations: components["schemas"]["SupplyCombination"][];
+            /** Procedures */
+            procedures: components["schemas"]["ProcedureRelation"][];
+            /** Policy Version */
+            policy_version: string;
+            /** Procedure Definitions */
+            procedure_definitions: components["schemas"]["ProcedureDefinition"][];
+            /** Scenarios */
+            scenarios: components["schemas"]["ScenarioDefinition"][];
+            /** Algorithm */
+            algorithm: string[];
+        };
+        /** MaterialCatalog */
+        MaterialCatalog: {
+            /** Materials */
+            materials: components["schemas"]["MaterialDefinition"][];
+        };
+        /** MaterialDefinition */
+        MaterialDefinition: {
+            /** Id */
+            id: string;
+            labels: components["schemas"]["MaterialLabels"];
+            /** Aliases */
+            aliases: string[];
+        };
+        /** MaterialLabels */
+        MaterialLabels: {
+            /** En */
+            en: string;
+            /** He */
+            he: string;
+        };
+        /** ProcedureCatalog */
+        ProcedureCatalog: {
+            /** Procedures */
+            procedures: components["schemas"]["ProcedureDefinition"][];
+        };
+        /** ProcedureContent */
+        ProcedureContent: {
+            /** Title */
+            title: string;
+            /** Confirmation */
+            confirmation: string;
+            /** Accept */
+            accept: string;
+            /** Steps */
+            steps: string[];
+            /** Why */
+            why: string;
+            /** Hint */
+            hint: string;
+        };
+        /** ProcedureDefinition */
+        ProcedureDefinition: {
+            /** Id */
+            id: string;
+            /** Surface */
+            surface: string;
+            /** Object */
+            object: string;
+            /** Material */
+            material: string;
+            /** Finishes */
+            finishes: (string | null)[];
+            /** Supplies */
+            supplies: string;
+            source: components["schemas"]["EvidenceSource"];
+            chemistry_source?: components["schemas"]["EvidenceSource"] | null;
+            /** Content */
+            content: {
+                [key: string]: components["schemas"]["ProcedureContent"];
+            };
+        };
+        /** ProcedureRelation */
+        ProcedureRelation: {
+            /** Object */
+            object: string;
+            /** Material */
+            material: string;
+            /** Surface */
+            surface: string;
+            /** Finishes */
+            finishes: (string | null)[];
+            /** Rules */
+            rules: components["schemas"]["ProcedureRule"][];
+        };
+        /** ProcedureRule */
+        ProcedureRule: {
+            /** Supplies */
+            supplies: string;
+            /** Rule */
+            rule: string;
+            source: components["schemas"]["EvidenceSource"];
+            chemistry_source: components["schemas"]["EvidenceSource"] | null;
+        };
+        /** Provenance */
+        Provenance: {
+            /** Url */
+            url: string;
+            /** Publisher */
+            publisher: string;
+            /** Retrieved At */
+            retrieved_at: string;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "live" | "curated" | "fixture";
+        };
+        /** Ratio */
+        Ratio: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "ratio";
+            /** Numerator */
+            numerator: string;
+            /** Denominator */
+            denominator: string;
+            templates: components["schemas"]["Text"];
+        };
+        /** ResearchCard */
+        ResearchCard: {
+            /** Title */
+            title: string;
+            /** Text */
+            text: string;
+            /** Fields */
+            fields?: components["schemas"]["DisplayField"][];
+            provenance?: components["schemas"]["Provenance"] | null;
+        };
+        /** ResearchCatalog */
+        ResearchCatalog: {
+            /** Title */
+            title: {
+                [key: string]: string;
+            };
+            /** Intro */
+            intro: {
+                [key: string]: string;
+            };
+            /** Tools */
+            tools: components["schemas"]["ResearchTool"][];
+        };
+        /** ResearchInput */
+        ResearchInput: {
+            /** @default en */
+            locale: components["schemas"]["Language"];
+            /** Values */
+            values: {
+                [key: string]: string;
+            };
+        };
+        /** ResearchResult */
+        ResearchResult: {
+            /** Cards */
+            cards: components["schemas"]["ResearchCard"][];
+        };
+        /** ResearchTool */
+        ResearchTool: {
+            /** Id */
+            id: string;
+            /** Title */
+            title: {
+                [key: string]: string;
+            };
+            /** Description */
+            description: {
+                [key: string]: string;
+            };
+            /** Fields */
+            fields: components["schemas"]["InputField"][];
+        };
+        /** ReviewView */
+        ReviewView: {
+            /** Fields */
+            fields: components["schemas"]["DisplayField"][];
+            /** Confirmation */
+            confirmation?: string | null;
+            /** Accept */
+            accept?: string | null;
+            assessment?: components["schemas"]["AssessmentPayload"] | null;
+        };
+        /** ScenarioDefinition */
+        ScenarioDefinition: {
+            /** Id */
+            id: string;
+            title: components["schemas"]["Text"];
+            example: components["schemas"]["Text"];
+            /** Steps */
+            steps: {
+                [key: string]: string[];
+            };
+            why: components["schemas"]["Text"];
+            source: components["schemas"]["ScenarioSource"];
+            /** Fields */
+            fields: components["schemas"]["InputField"][];
+            submit: components["schemas"]["Text"];
+            /** Calculation */
+            calculation?: (components["schemas"]["Classification"] | components["schemas"]["Ratio"] | components["schemas"]["Lookup"]) | null;
+        };
+        /** ScenarioRequest */
+        ScenarioRequest: {
+            /** @default en */
+            locale: components["schemas"]["Language"];
+            /** Values */
+            values: {
+                [key: string]: string;
+            };
+        };
+        /** ScenarioResult */
+        ScenarioResult: {
+            /** Result */
+            result: string;
+        };
+        /** ScenarioSource */
+        ScenarioSource: {
             /** Title */
             title: string;
             /** Url */
             url: string;
-            language: components["schemas"]["Locale"];
+        };
+        /** ScenarioView */
+        ScenarioView: {
+            /** Id */
+            id: string;
+            title: components["schemas"]["Text"];
+            example: components["schemas"]["Text"];
+            /** Steps */
+            steps: {
+                [key: string]: string[];
+            };
+            why: components["schemas"]["Text"];
+            source: components["schemas"]["ScenarioSource"];
+            /** Fields */
+            fields: components["schemas"]["InputField"][];
+            submit: components["schemas"]["Text"];
         };
         /**
          * Status
          * @enum {string}
          */
         Status: "approved" | "unverified";
-        /**
-         * Surface
-         * @enum {string}
-         */
-        Surface: "studio_display_standard_glass" | "unknown";
+        /** SupplyCombination */
+        SupplyCombination: {
+            /** Supplies */
+            supplies: string[];
+            /** Result */
+            result: string;
+        };
+        Text: {
+            [key: string]: string;
+        };
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -140,6 +791,300 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    management_catalog: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ManagementCatalog"];
+                };
+            };
+        };
+    };
+    management_validate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialCatalog"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialCatalog"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    management_validate_procedures: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProcedureCatalog"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProcedureCatalog"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    management_resolve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DebugInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    application_catalog: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApplicationCatalog"];
+                };
+            };
+        };
+    };
+    question_hints: {
+        parameters: {
+            query?: {
+                text?: string;
+                locale?: "en" | "he";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": string[];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    evaluate_scenario: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                scenario_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScenarioRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    activity_trace: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActivityTrace"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    research_catalog: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResearchCatalog"];
+                };
+            };
+        };
+    };
+    research_evaluate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tool: "compound" | "evidence" | "compare";
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResearchInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResearchResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     health: {
         parameters: {
             query?: never;
@@ -181,7 +1126,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Interpretation"];
+                    "application/json": components["schemas"]["InterpretResult"];
                 };
             };
             /** @description Validation Error */
