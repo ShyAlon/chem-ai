@@ -86,6 +86,58 @@
           }
         }
       ]
+    },
+    {
+      "id": "terminology",
+      "title": {
+        "en": "Chemical terminology",
+        "he": "מונחים כימיים"
+      },
+      "description": {
+        "en": "Search ChEBI through the official OLS MCP service. Results are candidates, not cleaning approvals.",
+        "he": "חיפוש ב־ChEBI דרך שירות MCP של OLS. התוצאות הן מועמדות לזיהוי ולא אישור לניקוי."
+      },
+      "fields": [
+        {
+          "id": "query",
+          "label": {
+            "en": "English chemical term",
+            "he": "מונח כימי באנגלית"
+          },
+          "default": "sodium chloride",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "object_materials",
+      "title": {
+        "en": "Object material comparison",
+        "he": "השוואת חומרי פריטים"
+      },
+      "description": {
+        "en": "Compare free Wikidata and DBpedia APIs. Enter an English object or product/model name. Material claims are candidates; exposed parts and finishes still need confirmation.",
+        "he": "השוואת ממשקי Wikidata ו־DBpedia החינמיים. הזינו שם פריט או דגם באנגלית. טענות לגבי חומרים הן מועמדות לזיהוי; יש לאשר את החלק החשוף ואת הגימור."
+      },
+      "fields": [
+        {
+          "id": "query",
+          "kind": "text",
+          "label": {
+            "en": "Object or product name",
+            "he": "שם פריט או מוצר"
+          }
+        },
+        {
+          "id": "component",
+          "kind": "text",
+          "label": {
+            "en": "Component (optional)",
+            "he": "חלק (לא חובה)"
+          },
+          "required": false
+        }
+      ]
     }
   ],
   "labels": {
@@ -100,7 +152,16 @@
       "reference": "Reference density",
       "difference": "Relative difference",
       "unavailable": "The MCP data service could not resolve this request. Check the service or try a more specific compound name or CID.",
-      "invalid": "Check the input values and reference selection."
+      "invalid": "Check the input values and reference selection.",
+      "object_matched": "Material claims found; confirm the exact model, exposed component, and finish.",
+      "object_no_material_data": "Object candidates found, but no explicit material claims were returned.",
+      "object_no_matches": "No exact object candidates returned.",
+      "object_unavailable": "Provider unavailable or timed out.",
+      "lookup_time": "Lookup duration",
+      "cache_hit": "Cache hit",
+      "candidate_material": "Candidate material",
+      "component_unknown": "Component unspecified",
+      "object_note": "Material candidates do not authorize a procedure."
     },
     "he": {
       "formula": "נוסחה מולקולרית",
@@ -113,7 +174,16 @@
       "reference": "צפיפות ייחוס",
       "difference": "הפרש יחסי",
       "unavailable": "שירות נתוני MCP לא הצליח לפתור את הבקשה. בדקו את השירות או נסו שם תרכובת מדויק יותר או CID.",
-      "invalid": "בדקו את הערכים ואת בחירת נתון הייחוס."
+      "invalid": "בדקו את הערכים ואת בחירת נתון הייחוס.",
+      "object_matched": "נמצאו טענות לגבי חומרים; יש לאשר דגם מדויק, חלק חשוף וגימור.",
+      "object_no_material_data": "נמצאו פריטים מועמדים אך לא הוחזרו טענות מפורשות לגבי חומרים.",
+      "object_no_matches": "לא הוחזרו פריטים מתאימים.",
+      "object_unavailable": "המקור אינו זמין או שזמן ההמתנה הסתיים.",
+      "lookup_time": "משך החיפוש",
+      "cache_hit": "התאמה במטמון",
+      "candidate_material": "חומר מועמד",
+      "component_unknown": "החלק לא צוין",
+      "object_note": "חומרים מועמדים אינם מאשרים שיטה."
     }
   }
 }

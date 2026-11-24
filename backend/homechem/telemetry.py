@@ -38,10 +38,14 @@ def configure() -> tuple[TracerProvider, MeterProvider]:
     return provider, meter_provider
 
 
-def event(name: str, **fields: object) -> None:
+def event(name: str, *, _collection=None, **fields: object) -> None:
+    from .activities import current
+    from .debug_bundle import capture_log
     context = trace.get_current_span().get_span_context()
-    log.info(json.dumps({
+    record = {
         "time": datetime.now(UTC).isoformat(), "event": name, "release": RELEASE,
         "trace_id": f"{context.trace_id:032x}" if context.is_valid else None,
         **fields,
-    }))
+    }
+    capture_log(_collection if _collection is not None else current.get(), record)
+    log.info(json.dumps(record))

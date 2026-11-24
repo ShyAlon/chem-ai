@@ -8,7 +8,8 @@ This document records the technology choices in the current implementation. Exac
 | UI and localization | CSS custom properties and logical properties, backend JSON message catalogs | Shared design tokens, English and Hebrew strings, and RTL layout |
 | PWA and preferences | Web App Manifest, Service Worker and Cache APIs, `localStorage` | Installation metadata, offline static shell, and browser-local language preference |
 | API | Python 3.12, FastAPI, Uvicorn, Pydantic | ASGI service, typed HTTP routes, input validation, and deterministic policy |
-| English normalization | NLTK Snowball and WordNet | Normalize inflections and use selected synonym sets in the deterministic resolver |
+| English normalization | spaCy 3.8 + locked en_core_web_sm 3.8.0; NLTK Snowball and WordNet | Grammatical target extraction, noun lemmas, modifiers, broad physical-object classes, and local vocabulary overlay |
+| Chemical terminology | Official EMBL-EBI OLS MCP / ChEBI | Remote candidate labels, definitions, and ontology identifiers; never procedure approval |
 | Client contract | OpenAPI, `openapi-typescript`, Fetch API | Generate TypeScript types from the server schema and use them in the HTTP client |
 | Integrations | MCP Python SDK, Streamable HTTP, HTTPX | Consume compound, evidence, and measurement data through a dedicated MCP service; expose an optional assessment tool; call model providers through HTTPX |
 | LLM inference | Ollama with `qwen2.5:7b-instruct-q4_K_M` by default, DeepSeek with `deepseek-flash` by default | Hebrew-to-English translation and surface suggestions for unfamiliar wording in local and production environments respectively. A fixture provider supports deterministic tests. |
@@ -39,3 +40,5 @@ FastAPI and Pydantic supply validated application definitions through `/api/cata
 A dedicated FastMCP service wraps PubChem PUG REST and curated evidence/reference records. The API's MCP client validates typed results, applies bounded caching and timeouts, and records operation spans. React displays live activity snapshots in an expandable timeline. The data service reuses the API deployment image.
 
 Shared Pydantic presentation models generate form types through OpenAPI. React reuses the same field renderer, JSON request client, and export utility across the notebook, scenarios, research, and management interfaces.
+
+Free object/material data uses the Wikidata Action API and DBpedia public SPARQL endpoint through httpx. Python's standard-library `zipfile` creates request-scoped debug archives; no ZIP dependency or external storage is required.

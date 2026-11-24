@@ -1,0 +1,54 @@
+{
+  "object_roots": [
+    "artifact.n.01",
+    "natural_object.n.01"
+  ],
+  "generic_heads": [
+    "surface",
+    "thing",
+    "object",
+    "item",
+    "area",
+    "spot"
+  ],
+  "spacy_model": "en_core_web_sm",
+  "problem_task_roles": {
+    "unclog": {
+      "patient_roots": [
+        "hindrance.n.02",
+        "obstruction.n.01",
+        "obstruction.n.02"
+      ],
+      "actions": [
+        "clear",
+        "remove",
+        "dislodge"
+      ],
+      "locations": [
+        "in",
+        "from",
+        "of"
+      ]
+    },
+    "clean": {
+      "patient_roots": [
+        "dust.n.01",
+        "dirt.n.02",
+        "stain.n.01",
+        "grease.n.01"
+      ],
+      "actions": [
+        "clean",
+        "remove",
+        "wipe",
+        "lift"
+      ],
+      "locations": [
+        "off",
+        "from",
+        "on",
+        "of"
+      ]
+    }
+  }
+}

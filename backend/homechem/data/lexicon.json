@@ -174,7 +174,15 @@
       "dishwasher detergent",
       "dish soap",
       "dishwashing liquid",
-      "soap"
+      "soap",
+      "drain cleaner",
+      "drain opener",
+      "caustic soda"
+    ],
+    "plunger": [
+      "plunger",
+      "cup plunger",
+      "sink plunger"
     ]
   },
   "exclusions": [
@@ -278,6 +286,15 @@
         "microfiber",
         "dish_soap"
       ]
+    ],
+    "cup_plunger_and_water": [
+      [
+        "plunger"
+      ],
+      [
+        "plunger",
+        "water"
+      ]
     ]
   },
   "surface_descriptions": [
@@ -291,5 +308,22 @@
       "material": "glass",
       "term": "shower_glass"
     }
-  ]
+  ],
+  "task_verbs": {
+    "unclog": [
+      "unclog",
+      "unblock",
+      "clear a blocked",
+      "clear a clogged",
+      "blocked sink",
+      "clogged sink",
+      "sink is blocked",
+      "sink is clogged",
+      "sink will not drain",
+      "sink won't drain",
+      "sink is not draining",
+      "sink drains slowly",
+      "sink is draining slowly"
+    ]
+  }
 }

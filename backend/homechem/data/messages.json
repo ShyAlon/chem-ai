@@ -72,7 +72,15 @@
     "activityKind_calculation": "Calculation",
     "activityKind_mcp": "MCP",
     "activityKind_cache": "Cache",
-    "activityKind_retrieval": "Retrieval"
+    "activityKind_retrieval": "Retrieval",
+    "evidenceMatched": "Related sources retrieved through MCP.",
+    "evidenceNoMatches": "The MCP evidence search found no matching sources in the current library.",
+    "evidenceUnavailable": "MCP evidence retrieval is unavailable. No retrieved sources were added.",
+    "relatedEvidence": "Retrieved evidence",
+    "activityDownload": "Download debug ZIP",
+    "activityDownloading": "Downloading…",
+    "activityDownloadError": "Download unavailable. The trace may have expired.",
+    "clarify": "Update these details"
   },
   "he": {
     "hintLabel": "שאלות מוצעות · בחרו עם ↑ ↓ והשלימו עם Tab",
@@ -147,6 +155,14 @@
     "activityKind_calculation": "חישוב",
     "activityKind_mcp": "MCP",
     "activityKind_cache": "מטמון",
-    "activityKind_retrieval": "אחזור"
+    "activityKind_retrieval": "אחזור",
+    "evidenceMatched": "מקורות קשורים אוחזרו באמצעות MCP.",
+    "evidenceNoMatches": "חיפוש המקורות באמצעות MCP לא מצא מקורות תואמים בספרייה הנוכחית.",
+    "evidenceUnavailable": "אחזור המקורות באמצעות MCP אינו זמין. לא נוספו מקורות שאוחזרו.",
+    "relatedEvidence": "מקורות שאוחזרו",
+    "activityDownload": "הורדת ZIP לאבחון",
+    "activityDownloading": "מוריד…",
+    "activityDownloadError": "ההורדה אינה זמינה. ייתכן שתוקף התיעוד פג.",
+    "clarify": "עדכון הפרטים"
   }
 }

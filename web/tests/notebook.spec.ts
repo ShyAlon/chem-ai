@@ -70,6 +70,8 @@ test('confirms missing tabletop materials and logs the decision as an object', a
     originalText,
     locale: 'en',
     requestId: expect.stringMatching(/^[0-9a-f]{32}$/),
+    traceId: expect.stringMatching(/^[0-9a-f]{32}$/),
+    activityUrl: expect.stringMatching(/\/api\/activities\/[0-9a-f]{32}$/),
     httpStatus: 200,
     elapsedMs: expect.any(Number),
     outcome: 'success',
@@ -197,4 +199,52 @@ test('the algorithm guide is directly accessible and supports Hebrew', async ({ 
   await expect(page.getByRole('heading', { name: 'איך זה עובד?' })).toBeVisible();
   await page.getByRole('link', { name: 'חזרה למחברת הפתרונות' }).click();
   await expect(page.getByRole('textbox')).toBeVisible();
+});
+
+test('an unresolved keyboard question still searches MCP and explains the empty result', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('textbox').fill('How do I clean my mac keyboard');
+  const loggedAttempt = page.waitForEvent('console', { predicate: message => message.type() === 'info' && message.text().includes('homechem.attempt') });
+  await page.getByRole('button', { name: 'Review my inputs' }).click();
+  const summary = await (await loggedAttempt).args()[0].jsonValue();
+  expect(summary.diagnostics.unrecognized_tokens).toEqual(['mac']);
+  expect(summary.diagnostics.reason_codes).not.toContain('model_no_catalog_match');
+  expect(summary.evidenceSearchedDocuments).toBe(4);
+  expect(summary.traceId).toMatch(/^[a-f0-9]{32}$/);
+  expect(summary.activityUrl).toContain('/api/activities/');
+  await expect(page.getByRole('heading', { name: 'No reviewed procedure found' })).toBeVisible();
+  await expect(page.getByText('The MCP evidence search found no matching sources in the current library.')).toBeVisible();
+  const activity = page.getByRole('complementary', { name: 'Activity trace', exact: true });
+  await activity.getByRole('button', { name: /Activity trace/ }).click();
+  await expect(activity.locator('.activity-kind').getByText('MCP', { exact: true })).toBeVisible();
+  await expect(activity.getByText('evidence.search', { exact: true })).toBeVisible();
+  const normalization = activity.locator('.activity-step').filter({ hasText: 'normalization.resolve' });
+  await normalization.locator('summary').click();
+  await expect(normalization.locator('pre')).toContainText('"keyboard"');
+  await expect(normalization).toContainText('material_not_identified');
+  expect(summary.objectType).toBe('keyboard');
+  expect(summary.resolutionStatus).toBe('needs_details');
+  await expect(activity.getByText('nlp.spacy', { exact: true })).toBeVisible();
+  const retrieval = activity.locator('.activity-step').filter({ hasText: 'evidence.search' });
+  await retrieval.locator('summary').click();
+  await expect(retrieval.locator('pre')).toContainText('How do I clean my mac keyboard');
+  await expect(page.getByRole('button', { name: 'Check procedure' })).toHaveCount(0);
+});
+
+test('downloads the selected request debug ZIP from the activity panel', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('textbox').fill('Clean my ceramic sink');
+  await page.getByRole('button', { name: 'Review my inputs' }).click();
+  const activity = page.getByRole('complementary', { name: 'Activity trace', exact: true });
+  const button = activity.getByRole('button', { name: 'Download debug ZIP' });
+  await expect(button).toBeEnabled();
+  // Export remains accessible while the detailed timeline is collapsed.
+  const downloaded = page.waitForEvent('download');
+  await button.click();
+  const file = await downloaded;
+  expect(file.suggestedFilename()).toMatch(/^homechem-debug-[a-f0-9]{32}\.zip$/);
+  expect(await file.failure()).toBeNull();
+  await page.route('**/api/activities/*/download', route => route.fulfill({ status: 404, body: '{}' }));
+  await button.click();
+  await expect(activity.getByRole('alert')).toContainText('Download unavailable');
 });

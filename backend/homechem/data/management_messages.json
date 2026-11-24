@@ -31,7 +31,10 @@
     "procedureDraft": "Procedure definitions JSON",
     "exportProcedures": "Validate & export procedures",
     "proceduresValidated": "Validated procedure catalog downloaded.",
-    "scenarios": "Scenarios and sources"
+    "scenarios": "Scenarios and sources",
+    "parents": "Parent material IDs (comma separated)",
+    "entitySources": "Entity resolution sources",
+    "intent": "Task"
   },
   "he": {
     "title": "קטלוג ואלגוריתמים",
@@ -65,6 +68,9 @@
     "procedureDraft": "טיוטת שיטות JSON",
     "exportProcedures": "אימות וייצוא שיטות",
     "proceduresValidated": "הקובץ אומת והורד.",
-    "scenarios": "תרחישים ומקורות"
+    "scenarios": "תרחישים ומקורות",
+    "parents": "מזהי חומרי אב (מופרדים בפסיקים)",
+    "entitySources": "מקורות לזיהוי ישויות",
+    "intent": "משימה"
   }
 }

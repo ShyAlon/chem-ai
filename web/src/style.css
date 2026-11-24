@@ -372,3 +372,15 @@ dd { margin: 2px 0 10px; overflow-wrap: anywhere; }
 @keyframes activity-pulse { 50% { opacity: .45; box-shadow: 0 0 22px #b9de8b88; } }
 @keyframes activity-arrive { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .activity-panel *, .activity-step { animation: none !important; } }
+
+.related-evidence { margin-block: 1rem; padding-block-start: .75rem; border-top: 1px solid var(--line); }
+.related-evidence h4 { margin-block: .75rem .3rem; }
+.related-evidence p { margin-block: .4rem; }
+.related-evidence small { color: var(--muted); }
+.activity-step pre { font: .75rem/1.5 monospace; white-space: pre-wrap; overflow-wrap: anywhere; padding: .65rem; border: 1px solid #95b79440; border-radius: 6px; background: #10251f; color: #d9e8db; }
+.activity-download { direction: ltr; display: flex; justify-content: flex-end; align-items: center; gap: .75rem; padding: .5rem .75rem; border-top: 1px solid #95b79440; }
+.activity-download button { border: 1px solid #95b79460; border-radius: .5rem; padding: .45rem .7rem; background: #15372f; color: #d9e8db; font: inherit; font-size: .75rem; cursor: pointer; }
+.activity-download button:disabled { opacity: .5; cursor: default; }
+.activity-download small { color: #ffb9a7; }
+.procedure-check { display: flex; gap: .7rem; align-items: flex-start; margin-block: .85rem; line-height: 1.5; }
+.procedure-check input { flex: 0 0 auto; width: 1.15rem; height: 1.15rem; margin-block-start: .2rem; accent-color: #245f4a; }

@@ -171,5 +171,108 @@
         "hint": "איך מנקים רצפת אריחי קרמיקה מזוגגים עם מים ומגב?"
       }
     }
+  },
+  {
+    "id": "sink_drain_mechanical_unclogging",
+    "surface": "sink_drain",
+    "object": "sink",
+    "material": null,
+    "intent": "unclog",
+    "finishes": [
+      null
+    ],
+    "supplies": "cup_plunger_and_water",
+    "checks": [
+      {
+        "id": "chemical_free",
+        "label": {
+          "en": "No drain cleaner or other chemicals have been added; the drain history is known.",
+          "he": "לא נוספו פותח סתימות או כימיקלים אחרים; ידוע לי מה הוכנס לניקוז."
+        }
+      },
+      {
+        "id": "isolated_intact",
+        "label": {
+          "en": "Only this sink is affected, with no sewage backup, leaks, damaged or corroded pipes.",
+          "he": "הבעיה מוגבלת לכיור הזה, ללא חזרת ביוב, נזילות או צנרת פגומה או חלודה."
+        }
+      },
+      {
+        "id": "safe_setup",
+        "label": {
+          "en": "I have a cup plunger, water, gloves and eye protection; any disposal is off and isolated from power.",
+          "he": "יש לי פומפה לכיור, מים, כפפות והגנה לעיניים; טוחן אשפה, אם קיים, כבוי ומנותק מהחשמל."
+        }
+      }
+    ],
+    "source": {
+      "title": "The Home Depot sink plunging guide",
+      "url": "https://www.homedepot.com/c/ah/how-to-clear-sink-drains-with-a-plunger/9ba683603be9fa5395fab908566771c",
+      "language": "en"
+    },
+    "chemistry_source": {
+      "title": "Poison Control drain-cleaner chemistry",
+      "url": "https://www.poison.org/articles/whats-in-drain-cleaner",
+      "language": "en"
+    },
+    "content": {
+      "en": {
+        "title": "Blocked sink drain",
+        "confirmation": "Confirm every condition below. If any answer is no or unknown, stop and consult a plumber. This mechanical method does not depend on the basin material and uses no chemical drain opener.",
+        "accept": "Confirm conditions and show unclogging steps",
+        "steps": [
+          "Keep any disposal disconnected. With gloves and eye protection on, lift out only a readily removable strainer and visible debris; do not reach into a disposal or dismantle plumbing.",
+          "Cover the overflow and any connected second-basin drain with wet cloths. Keep enough room-temperature water to cover the plunger cup without overflowing.",
+          "Seal a flat cup plunger over the drain, easing it down first to avoid splashing. Use controlled up-and-down strokes, then lift it to check drainage.",
+          "If flow returns, rinse with room-temperature water and check for leaks. If it stays blocked, backs up elsewhere or leaks, stop and call a plumber; do not add chemicals or boiling water."
+        ],
+        "why": "The water and sealed cup transmit alternating pressure to move a local obstruction; this is a physical process, not a chemical reaction. Baking soda and vinegar neutralize each other, producing carbon dioxide that can escape from a vented drain; fizzing is not evidence that grease or hair has dissolved. Strong acid or alkali drain cleaners can leave corrosive liquid behind.",
+        "hint": "How do I unclog my sink?",
+        "blocked_reason": "A stated condition conflicts with the mechanical drain procedure. If a chemical cleaner has been used or plumbing is leaking or backing up, do not plunge or add products. Contact a plumber and explain what happened."
+      },
+      "he": {
+        "title": "ניקוז כיור סתום",
+        "confirmation": "אשרו כל תנאי למטה. אם תנאי כלשהו אינו מתקיים או אינו ידוע, עצרו ופנו לאינסטלטור. השיטה המכאנית אינה תלויה בחומר אגן הכיור ואינה משתמשת בפותח סתימות כימי.",
+        "accept": "אישור התנאים והצגת שלבי פתיחת הסתימה",
+        "steps": [
+          "השאירו טוחן אשפה מנותק. עם כפפות והגנה לעיניים, הוציאו רק מסננת שנשלפת בקלות ולכלוך גלוי; אל תכניסו יד לטוחן ואל תפרקו צנרת.",
+          "כסו בסמרטוטים רטובים את פתח הגלישה ואת הניקוז של אגן שני מחובר. השאירו מים בטמפרטורת החדר לכיסוי כוס הפומפה, ללא הצפה.",
+          "אטמו את פתח הניקוז בפומפה בעלת כוס שטוחה, בהנחה עדינה למניעת התזה. הניעו מעלה ומטה בתנועות מבוקרות והרימו לבדיקה אם המים מתנקזים.",
+          "אם הזרימה חזרה, שטפו במים בטמפרטורת החדר ובדקו נזילות. אם הסתימה נשארת, מופיעה הצפה במקום אחר או נזילה, עצרו ופנו לאינסטלטור; אל תוסיפו כימיקלים או מים רותחים."
+        ],
+        "why": "המים והכוס האטומה מעבירים שינויי לחץ שמניעים חסימה מקומית; זהו תהליך פיזיקלי ולא תגובה כימית. סודה לשתייה וחומץ מנטרלים זה את זה ופולטים פחמן דו־חמצני שיכול לברוח מניקוז מאוורר; בעבוע אינו הוכחה להמסת שומן או שיער. פותחי סתימות חומציים או בסיסיים חזקים עלולים להשאיר נוזל מאכל.",
+        "hint": "איך פותחים סתימה בכיור?",
+        "blocked_reason": "תנאי שנמסר סותר את השיטה המכאנית לניקוז. אם נעשה שימוש בפותח סתימות כימי או שיש נזילה או חזרת ביוב, אל תשתמשו בפומפה ואל תוסיפו מוצרים. פנו לאינסטלטור וציינו מה קרה."
+      }
+    },
+    "requirements": [
+      {
+        "predicate": "chemical_free",
+        "expected": true,
+        "check": "chemical_free",
+        "question": {
+          "en": "No drain cleaner or other chemicals have been added; the drain history is known.",
+          "he": "לא נוספו פותח סתימות או כימיקלים אחרים; ידוע לי מה הוכנס לניקוז."
+        }
+      },
+      {
+        "predicate": "isolated_intact",
+        "expected": true,
+        "check": "isolated_intact",
+        "question": {
+          "en": "Only this sink is affected, with no sewage backup, leaks, damaged or corroded pipes.",
+          "he": "הבעיה מוגבלת לכיור הזה, ללא חזרת ביוב, נזילות או צנרת פגומה או חלודה."
+        }
+      },
+      {
+        "predicate": "safe_setup",
+        "expected": true,
+        "check": "safe_setup",
+        "question": {
+          "en": "I have a cup plunger, water, gloves and eye protection; any disposal is off and isolated from power.",
+          "he": "יש לי פומפה לכיור, מים, כפפות והגנה לעיניים; טוחן אשפה, אם קיים, כבוי ומנותק מהחשמל."
+        }
+      }
+    ]
   }
 ]

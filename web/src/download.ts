@@ -1,5 +1,9 @@
 export function downloadJSON(filename: string, data: unknown) {
-  const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2) + '\n'], { type: 'application/json' }));
+  downloadBlob(filename, new Blob([JSON.stringify(data, null, 2) + '\n'], { type: 'application/json' }));
+}
+
+export function downloadBlob(filename: string, blob: Blob) {
+  const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
   link.download = filename;

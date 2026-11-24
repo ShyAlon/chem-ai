@@ -28,13 +28,29 @@ class ProcedureContent(Definition):
     steps: list[str] = Field(min_length=1)
     why: str = Field(min_length=1)
     hint: str = Field(min_length=1)
+    blocked_reason: str | None = None
+
+
+class ProcedureCheck(Definition):
+    id: str = Field(pattern=r"^[a-z][a-z0-9_]+$")
+    label: dict[Literal["en", "he"], str]
+
+
+class FactRequirement(Definition):
+    predicate: str = Field(pattern=r"^[a-z][a-z0-9_]+$")
+    expected: str | bool
+    check: str | None = None
+    question: dict[Literal["en", "he"], str]
 
 
 class ProcedureDefinition(Definition):
     id: str = Field(pattern=r"^[a-z][a-z0-9_]+$")
     surface: str = Field(pattern=r"^[a-z][a-z0-9_]+$")
     object: str
-    material: str
+    material: str | None
+    intent: str = "clean"
+    checks: list[ProcedureCheck] = Field(default_factory=list)
+    requirements: list[FactRequirement] = Field(default_factory=list)
     finishes: list[str | None]
     supplies: str
     source: EvidenceSource
@@ -60,17 +76,26 @@ class ProcedureCatalog(Definition):
         for entry in self.procedures:
             if entry.surface == "unknown":
                 raise ValueError("The unknown surface is reserved")
-            if entry.id in ids or entry.surface in surfaces or (entry.object, entry.material) in targets:
+            if entry.id in ids or entry.surface in surfaces or (entry.intent, entry.object, entry.material) in targets:
                 raise ValueError("Procedure IDs, surfaces, and object/material targets must be unique")
-            if entry.material not in materials or entry.object not in lexicon["objects"]:
+            if (entry.material is not None and entry.material not in materials) or entry.object not in lexicon["objects"]:
                 raise ValueError("Unknown procedure material or object")
             if entry.supplies not in lexicon["supply_combinations"]:
                 raise ValueError("Unknown procedure supplies")
             if any(finish is not None and finish not in lexicon["finishes"] for finish in entry.finishes):
                 raise ValueError("Unknown procedure finish")
+            if entry.intent != "clean" and entry.intent not in lexicon.get("task_verbs", {}):
+                raise ValueError("Unknown procedure intent")
+            if entry.material is None and entry.intent == "clean":
+                raise ValueError("Surface cleaning requires a material")
+            if len({check.id for check in entry.checks}) != len(entry.checks) or any(set(check.label) != {"en", "he"} for check in entry.checks):
+                raise ValueError("Procedure checks require unique IDs and bilingual labels")
+            check_ids = {check.id for check in entry.checks}
+            if any(set(requirement.question) != {"en", "he"} or (requirement.check and requirement.check not in check_ids) for requirement in entry.requirements):
+                raise ValueError("Fact requirements need bilingual questions and valid check references")
             ids.add(entry.id)
             surfaces.add(entry.surface)
-            targets.add((entry.object, entry.material))
+            targets.add((entry.intent, entry.object, entry.material))
         if read_data("settings.json")["example_procedure"] not in ids:
             raise ValueError("The configured example procedure must remain")
         return self

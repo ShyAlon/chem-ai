@@ -27,6 +27,9 @@ def test_pubchem_adapter_parses_identity_and_keeps_provenance(monkeypatch):
 def test_curated_evidence_search_and_condition_specific_reference():
     result = knowledge_server.search_evidence("surfactants")
     assert result.items[0].id == "surfactants"
+    assert result.searched_documents == 4
+    assert result.search_method == "keyword_overlap"
+    assert result.search_terms == ["surfactants"]
     assert result.items[0].provenance.mode == "curated"
     reference = knowledge_server.get_reference("water-density-21")
     assert reference.value == 0.99802

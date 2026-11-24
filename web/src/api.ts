@@ -1,7 +1,7 @@
 import { trackedFetch } from './activityClient';
-import type { paths } from './schema';
+import type { components, paths } from './schema';
 
-type Action = 'interpret' | 'assess';
+type Action = 'interpret' | 'assess' | 'clarify';
 type Endpoint<A extends Action> = paths[`/api/${A}`]['post'];
 type Payload<A extends Action> = Endpoint<A>['requestBody']['content']['application/json'];
 type Result<A extends Action> = Endpoint<A>['responses'][200]['content']['application/json'];
@@ -20,9 +20,14 @@ function attemptSummary(result: unknown) {
   if (!result || typeof result !== 'object') return {};
   const data = result as Record<string, unknown>;
   if ('rule' in data) return { decision: data.status, rule: data.rule, policyVersion: data.version };
+  const evidence = data.evidence as Partial<components['schemas']['EvidenceContext']> | undefined;
   if ('surface' in data) return {
-    surface: data.surface, materials: data.materials, method: data.method, surfaceTerm: data.surface_term,
+    surface: data.surface, materials: data.materials, intent: data.intent, method: data.method, surfaceTerm: data.surface_term,
     translatedText: data.translated_text, translationProvider: data.translation_provider,
+    situation: data.situation, questions: data.questions, contextId: data.context_id, entities: data.entities, terminology: data.terminology, objectMaterials: data.object_materials,
+    diagnostics: data.diagnostics, resolutionStatus: data.resolution_status, evidenceStatus: evidence?.status,
+    evidenceMatches: evidence?.items?.length, evidenceSearchedDocuments: evidence?.searched_documents,
+    evidenceSearchMethod: evidence?.search_method,
     objectType: data.object_type, device: data.device, substrate: data.substrate, finish: data.finish,
   };
   if ('result' in data) return { result: data.result };
@@ -68,7 +73,10 @@ export async function requestJSON<T>(path: string, payload: unknown, originalTex
   } finally {
     console.info({
       event: 'homechem.attempt', action, originalText, locale: document.documentElement.lang,
-      requestId, httpStatus: response?.status ?? null,
+      requestId, traceId: response?.headers.get('x-trace-id') ?? null,
+      activityUrl: response?.headers.get('x-activity-id')
+        ? new URL('/api/activities/' + response.headers.get('x-activity-id'), window.location.origin).href : null,
+      httpStatus: response?.status ?? null,
       elapsedMs: Math.round(performance.now() - started),
       outcome: result === undefined ? 'error' : 'success',
       ...(retryAfter !== undefined && { retryAfter }),

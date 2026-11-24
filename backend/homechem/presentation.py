@@ -17,6 +17,7 @@ class InputField(BaseModel):
     id: str
     label: Text
     kind: Literal["text", "number", "select"]
+    required: bool = True
     minimum: float | None = None
     maximum: float | None = None
     max_length: int | None = None

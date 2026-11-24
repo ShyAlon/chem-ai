@@ -12,6 +12,7 @@ import { Management } from './Management';
 import { ActivityTimeline } from './ActivityTimeline';
 import { Research } from './Research';
 import { QuestionHints } from './QuestionHints';
+import { InputFields } from './InputFields';
 
 const guidePath = '/how-it-works';
 const showManagement = window.location.pathname.replace(/\/$/, '') === '/management';
@@ -26,6 +27,7 @@ function App({ catalog }: { catalog: ApplicationCatalog }) {
   const [workspace, setWorkspace] = useState('cleaning');
   const [text, setText] = useState('');
   const [inputs, setInputs] = useState<components['schemas']['InterpretResult'] | null>(null);
+  const [checks, setChecks] = useState<Record<string, boolean>>({});
   const [decision, setDecision] = useState<components['schemas']['Decision'] | null>(null);
   const [requestId, setRequestId] = useState<string | null>(null);
   const [interpretationId, setInterpretationId] = useState<string | null>(null);
@@ -59,6 +61,7 @@ function App({ catalog }: { catalog: ApplicationCatalog }) {
 
 
   function reset() {
+    setChecks({});
     setInputs(null);
     setDecision(null);
     setRequestId(null);
@@ -157,11 +160,29 @@ function App({ catalog }: { catalog: ApplicationCatalog }) {
                       {review?.fields.map(field => <div key={field.label}><dt>{field.label}</dt><dd>{field.value}</dd></div>)}
                     </dl>
                     {review?.confirmation && <p>{review.confirmation}</p>}
+                    {inputs.context_id && (review?.questions ?? []).length > 0 && <form className="clarification-form" onSubmit={event => {
+                      event.preventDefault();
+                      const answers = Object.fromEntries(new FormData(event.currentTarget)) as Record<string, string>;
+                      void run(async () => {
+                        const result = await post('clarify', { context_id: inputs.context_id!, answers }, text);
+                        setInputs(result.data); setChecks({}); setInterpretationId(result.requestId);
+                        return result;
+                      });
+                    }}>
+                      <InputFields fields={review!.questions!} prefix="clarification" locale={locale} disabled={pending} />
+                      <button className="primary" disabled={pending}>{pending ? t.working : t.clarify}</button>
+                    </form>}
+                    {supported && (review?.checks ?? []).map(check => <label key={check.id} className="procedure-check">
+                      <input type="checkbox" checked={Boolean(checks[check.id])} disabled={pending}
+                        onChange={event => setChecks(values => ({ ...values, [check.id]: event.target.checked }))} />
+                      <span>{check.label}</span>
+                    </label>)}
                     <div className="actions">
-                      {supported && review && <button className="primary" type="button" disabled={!online || pending}
+                      {supported && review && <button className="primary" type="button" disabled={!online || pending || (review.checks ?? []).some(check => !checks[check.id])}
                         onClick={() => void run(async () => {
                           const result = await post('assess', {
                             ...review.assessment!,
+                            checks,
                           }, text);
                           setDecision(result.data);
                           return result;
@@ -177,7 +198,7 @@ function App({ catalog }: { catalog: ApplicationCatalog }) {
                 {retrySeconds > 0 && <p className="notice" role="status">{t.rateLimited.replace('{seconds}', String(retrySeconds))}</p>}
                 {failed && <p className="notice" role="alert">{t.error}</p>}
               </div>
-              <Evidence key={requestId} t={t} decision={decision} requestId={requestId} interpretationId={interpretationId} />
+              <Evidence key={requestId} t={t} locale={locale} related={decision?.evidence ?? inputs?.evidence} decision={decision} requestId={requestId} interpretationId={interpretationId} />
             </div>}
           </>
         )}

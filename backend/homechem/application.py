@@ -1,7 +1,7 @@
 from math import isfinite
 from typing import Annotated, Literal
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, Field, model_validator
 
 from .definitions import PROCEDURE_DEFINITIONS, ProcedureContent, read_data
@@ -10,6 +10,8 @@ from .policy import Interpretation, Materials, PROCEDURES_BY_SURFACE
 from .presentation import DisplayField, InputField, Language, Text
 from .telemetry import event
 from .activities import activity
+from .evidence import retrieve_evidence
+from .knowledge_models import EvidenceContext
 
 router = APIRouter(prefix="/api")
 
@@ -164,6 +166,13 @@ class AssessmentPayload(BaseModel):
     surface: str
     materials: str
     confirmed: bool = True
+    intent: str = "clean"
+    context_id: str | None = None
+
+
+class ReviewCheck(BaseModel):
+    id: str
+    label: str
 
 
 class ReviewView(BaseModel):
@@ -171,6 +180,8 @@ class ReviewView(BaseModel):
     confirmation: str | None = None
     accept: str | None = None
     assessment: AssessmentPayload | None = None
+    checks: list[ReviewCheck] = Field(default_factory=list)
+    questions: list[InputField] = Field(default_factory=list)
 
 
 def review_view(result: Interpretation, details: dict) -> dict[Language, ReviewView]:
@@ -191,16 +202,34 @@ def review_view(result: Interpretation, details: dict) -> dict[Language, ReviewV
             if details.get(key):
                 fields.append(DisplayField(label=messages[title], value=names.get(details[key], details[key])))
         fields.append(DisplayField(label=messages["material"], value=labels["supplies"].get(result.materials, result.materials)))
+        object_context = details.get("object_materials")
+        if object_context:
+            for provider in object_context["providers"]:
+                fields.append(DisplayField(label=f'{labels["material_lookup"]} · {provider["provider"]}', value=labels["lookup_" + provider["status"]]))
+                for candidate in provider["candidates"]:
+                    for claim in candidate["materials"]:
+                        fields.append(DisplayField(label=labels["material_candidate"] + " · " + candidate["label"], value=claim["label"] + " · " + (claim["component"] or labels["component_unknown"])))
         if supported:
             content = procedure.content[locale]
             views[locale] = ReviewView(
                 fields=fields, confirmation=content.confirmation,
                 accept=content.accept if result.materials == Materials.NOT_STATED else messages["assess"],
-                assessment=AssessmentPayload(surface=procedure.surface, materials=procedure.supplies),
+                assessment=AssessmentPayload(surface=procedure.surface, materials=procedure.supplies, intent=procedure.intent),
+                checks=[ReviewCheck(id=check.id, label=check.label[locale]) for check in procedure.checks
+                        if not any(requirement.check == check.id and details.get("situation") and {
+                            fact["value"] for fact in details["situation"]["facts"] if fact["subject"] in details["situation"]["target_ids"] and fact["predicate"] == requirement.predicate and fact["polarity"] == "affirmed"
+                        } == {requirement.expected} for requirement in procedure.requirements)],
             )
         else:
-            explanation = labels["screen_material"] if details.get("object_type") == "screen" and not details.get("substrate") else labels["outside_scope"]
-            views[locale] = ReviewView(fields=fields, confirmation=explanation)
+            explanation = labels["outside_scope"]
+            if result.intent == "clean" and details.get("object_type") and not details.get("substrate"):
+                explanation = labels["screen_material"] if details["object_type"] == "screen" else labels["material_needed"]
+            diagnostics = details.get("diagnostics") or {}
+            if "procedure_excluded" in diagnostics.get("reason_codes", []):
+                candidate = PROCEDURES_BY_SURFACE.get(diagnostics.get("candidate_surface"))
+                if candidate:
+                    explanation = candidate.content[locale].blocked_reason or explanation
+            views[locale] = ReviewView(fields=fields, confirmation=explanation, questions=details.get("questions", []))
     return views
 
 
@@ -211,14 +240,25 @@ class ScenarioRequest(BaseModel):
 
 class ScenarioResult(BaseModel):
     result: str
+    evidence: EvidenceContext | None = None
 
 
 @router.post("/scenarios/{scenario_id}/evaluate", operation_id="evaluate_scenario")
-def evaluate(scenario_id: str, data: ScenarioRequest) -> ScenarioResult:
+async def evaluate(scenario_id: str, data: ScenarioRequest, request: Request) -> ScenarioResult:
     with activity("calculation", "scenario.evaluate", scenario=scenario_id) as operation:
         result = calculate_scenario(scenario_id, data)
         operation.details["result"] = result.result
-        return result
+    scenario = next(item for item in SCENARIO_DEFINITIONS if item.id == scenario_id)
+    result.evidence = await retrieve_evidence(getattr(request.app.state, "knowledge", None), scenario.example["en"])
+    return result
+
+
+@router.post("/scenarios/{scenario_id}/evidence", operation_id="scenario_evidence")
+async def scenario_evidence(scenario_id: str, request: Request) -> EvidenceContext:
+    scenario = next((item for item in SCENARIO_DEFINITIONS if item.id == scenario_id), None)
+    if scenario is None:
+        raise HTTPException(404, "Unknown scenario")
+    return await retrieve_evidence(getattr(request.app.state, "knowledge", None), scenario.example["en"])
 
 
 def calculate_scenario(scenario_id: str, data: ScenarioRequest) -> ScenarioResult:

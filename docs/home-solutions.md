@@ -52,7 +52,7 @@ Select a workspace above the notebook to test its supported scenario. English an
 | Product-label explanations | Selectable surfactant, enzyme, and builder explanations |
 | Chemical disposal | Leftover-paint identification and referral to local collection services |
 
-Each scenario includes a chemistry explanation and a source link. Disposal collection locations are determined by the local authority. The free-text interpreter remains scoped to the four cleaning procedures.
+Each scenario includes a chemistry explanation and a source link. Disposal collection locations are determined by the local authority. The free-text interpreter supports four surface-cleaning procedures and a condition-gated mechanical sink-unclogging procedure.
 
 Run `./scripts/test-use-cases.sh` to check both languages and the calculators against an isolated API server. Set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to an installed Chromium-compatible browser if the Playwright browser is unavailable.
 
@@ -61,3 +61,11 @@ Run `./scripts/test-use-cases.sh` to check both languages and the calculators ag
 Procedure definitions are maintained in `backend/homechem/data/procedures.json`. Each entry owns the recognized object/material relationship, compatible finishes, cleaning supply set, bilingual instructions and confirmations, chemistry explanation, evidence, and question hint. Management can validate and export this catalog. Apply an export with `./scripts/import-procedures.sh <file>` and restart the API.
 
 React receives confirmation fields and assessment actions from interpretation, and instructions from assessment. Adding a procedure that uses the existing matching and assessment algorithms requires a catalog edit.
+
+## Mechanical sink unclogging
+
+`unclog` is separate from `clean`: a ceramic sink cleaning rule must not be selected to fix its blocked drain. The `sink_drain_mechanical_unclogging` catalog entry has `material: null` because this physical method does not depend on the basin substrate; material-independent surface-cleaning definitions remain invalid. No external material guess is requested for this procedure.
+
+Three localized checks cover chemical-free history, an isolated problem with intact plumbing, and equipment/power isolation. React renders those backend definitions; assessment requires every corresponding Boolean to be true. Mentions matching the procedure's `blocked_terms` withhold its confirmation action and return its localized explanation. This is conservative mention detection, not chemical-history inference or negation understanding. Unknown history means the user cannot confirm the chemical-free check.
+
+The instructions cover a cup plunger and room-temperature water, stop conditions, and referral when the problem persists. They do not prescribe chemical drain openers or boiling water. The reasoning distinguishes hydraulic pressure from the acid–bicarbonate reaction and vented carbon dioxide. Sources: [sink plunging](https://www.homedepot.com/c/ah/how-to-clear-sink-drains-with-a-plunger/9ba683603be9fa5395fab908566771c), [drain-tool precautions](https://www.lowes.com/n/how-to/clear-clogged-drain), and [drain-cleaner chemistry](https://www.poison.org/articles/whats-in-drain-cleaner).

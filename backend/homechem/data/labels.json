@@ -47,10 +47,19 @@
       "dry_microfiber_only": "Dry microfiber cloth",
       "water_and_microfiber_only": "Water and a microfiber cloth",
       "water_and_mop_only": "Water and a clean mop",
-      "mild_dish_soap_water_and_soft_cloth": "Warm water, mild dish soap, and a soft cloth"
+      "mild_dish_soap_water_and_soft_cloth": "Warm water, mild dish soap, and a soft cloth",
+      "cup_plunger_and_water": "Cup plunger and water"
     },
-    "outside_scope": "The catalog covers intact glass tabletops, smooth glass screens, and everyday cleaning of glazed ceramic surfaces.",
-    "screen_material": "Tell Fix-It what the exposed screen surface is made of and whether it has a special finish or protector."
+    "outside_scope": "No reviewed procedure matches all of these details. The catalog covers glass and glazed ceramic cleaning, plus chemical-free mechanical sink unclogging after required condition checks.",
+    "screen_material": "Tell Fix-It what the exposed screen surface is made of and whether it has a special finish or protector.",
+    "material_needed": "The object is recognized. Which material and finish are exposed on the area you want to clean? An object name alone does not identify its surface chemistry.",
+    "material_lookup": "External material lookup",
+    "material_candidate": "Candidate material",
+    "component_unknown": "Component unspecified",
+    "lookup_matched": "Material candidates found; confirm component and finish",
+    "lookup_no_material_data": "Object found; material not listed",
+    "lookup_no_matches": "No matching object returned",
+    "lookup_unavailable": "Source unavailable"
   },
   "he": {
     "objects": {
@@ -100,9 +109,18 @@
       "dry_microfiber_only": "מטלית מיקרופייבר יבשה",
       "water_and_microfiber_only": "מים ומטלית מיקרופייבר",
       "water_and_mop_only": "מים ומגב נקי",
-      "mild_dish_soap_water_and_soft_cloth": "מים חמימים, נוזל כלים עדין ומטלית רכה"
+      "mild_dish_soap_water_and_soft_cloth": "מים חמימים, נוזל כלים עדין ומטלית רכה",
+      "cup_plunger_and_water": "פומפה לכיור ומים"
     },
-    "outside_scope": "הקטלוג מכסה משטחי שולחן מזכוכית שלמה, מסכים מזכוכית חלקה וניקוי שגרתי של משטחי קרמיקה מזוגגים.",
-    "screen_material": "ציינו ממה עשוי המשטח החשוף של המסך ואם יש לו גימור מיוחד או מגן."
+    "outside_scope": "אין שיטה שנבדקה ומתאימה לכל הפרטים האלה. הקטלוג כולל ניקוי זכוכית וקרמיקה מזוגגת, וגם פתיחת סתימה מכאנית בכיור ללא כימיקלים, לאחר אישור התנאים הנדרשים.",
+    "screen_material": "ציינו ממה עשוי המשטח החשוף של המסך ואם יש לו גימור מיוחד או מגן.",
+    "material_needed": "הפריט זוהה. איזה חומר וגימור חשופים באזור שברצונך לנקות? שם הפריט לבדו אינו מזהה את הכימיה של המשטח.",
+    "material_lookup": "חיפוש חומר במקור חיצוני",
+    "material_candidate": "חומר מועמד",
+    "component_unknown": "החלק לא צוין",
+    "lookup_matched": "נמצאו חומרים מועמדים; יש לאשר חלק וגימור",
+    "lookup_no_material_data": "נמצא פריט; החומר לא צוין",
+    "lookup_no_matches": "לא הוחזר פריט תואם",
+    "lookup_unavailable": "המקור אינו זמין"
   }
 }

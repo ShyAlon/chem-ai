@@ -65,7 +65,7 @@ def search_evidence(query: Annotated[str, Field(min_length=1, max_length=200)]) 
         if score:
             ranked.append((score, entry))
     ranked.sort(key=lambda pair: pair[0], reverse=True)
-    return EvidenceResults(items=[
+    return EvidenceResults(searched_documents=len(data["evidence"]), search_method="keyword_overlap", search_terms=sorted(terms), items=[
         EvidenceItem(id=entry["id"], title=entry["title"], summary=entry["summary"],
                      provenance=provenance(entry["url"], entry["publisher"]))
         for _, entry in ranked[:5]

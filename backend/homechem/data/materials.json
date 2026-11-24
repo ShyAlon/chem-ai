@@ -6,9 +6,7 @@
       "he": "קרמיקה"
     },
     "aliases": [
-      "ceramic",
-      "porcelain",
-      "fireclay"
+      "ceramic"
     ]
   },
   {
@@ -39,8 +37,6 @@
       "he": "אבן טבעית"
     },
     "aliases": [
-      "marble",
-      "granite",
       "natural stone"
     ]
   },
@@ -85,6 +81,58 @@
     },
     "aliases": [
       "concrete"
+    ]
+  },
+  {
+    "id": "porcelain",
+    "labels": {
+      "en": "Porcelain",
+      "he": "פורצלן"
+    },
+    "aliases": [
+      "porcelain"
+    ],
+    "parents": [
+      "ceramic"
+    ]
+  },
+  {
+    "id": "fireclay",
+    "labels": {
+      "en": "Fireclay",
+      "he": "חרס חסין אש"
+    },
+    "aliases": [
+      "fireclay"
+    ],
+    "parents": [
+      "ceramic"
+    ]
+  },
+  {
+    "id": "marble",
+    "labels": {
+      "en": "Marble",
+      "he": "שיש"
+    },
+    "aliases": [
+      "marble"
+    ],
+    "parents": [
+      "natural_stone"
+    ]
+  },
+  {
+    "id": "granite",
+    "labels": {
+      "en": "Granite",
+      "he": "גרניט"
+    },
+    "aliases": [
+      "granite"
+    ],
+    "parents": [
+      "natural_stone"
     ]
   }
 ]

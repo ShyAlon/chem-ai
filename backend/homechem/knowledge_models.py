@@ -32,6 +32,9 @@ class EvidenceItem(KnowledgeModel):
 
 class EvidenceResults(KnowledgeModel):
     items: list[EvidenceItem]
+    searched_documents: int | None = Field(default=None, ge=0)
+    search_method: str | None = None
+    search_terms: list[str] = Field(default_factory=list)
 
 
 class ReferenceMeasurement(KnowledgeModel):
@@ -43,3 +46,11 @@ class ReferenceMeasurement(KnowledgeModel):
     temperature_c: float
     conditions: str
     provenance: Provenance
+
+
+class EvidenceContext(KnowledgeModel):
+    searched_documents: int | None = None
+    search_method: str | None = None
+    status: Literal["matched", "no_matches", "unavailable"]
+    message: dict[str, str]
+    items: list[EvidenceItem] = Field(default_factory=list)

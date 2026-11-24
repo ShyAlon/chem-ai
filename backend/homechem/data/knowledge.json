@@ -75,6 +75,29 @@
       ],
       "url": "https://rockedu.rockefeller.edu/stem-activities/exploring-emulsion-chemistry/chem-emulsion/",
       "publisher": "Rockefeller University"
+    },
+    {
+      "id": "drain_chemistry",
+      "title": {
+        "en": "Why drain fizzing is not proof of unclogging",
+        "he": "למה בעבוע בניקוז אינו הוכחה לפתיחת סתימה"
+      },
+      "summary": {
+        "en": "Bicarbonate and vinegar release carbon dioxide, which can escape from an open drain without removing a clog. Acidic or alkaline drain products may leave corrosive liquid behind.",
+        "he": "סודה לשתייה וחומץ פולטים פחמן דו־חמצני שיכול לברוח מניקוז פתוח בלי לסלק סתימה. פותחי סתימות חומציים או בסיסיים עלולים להשאיר נוזל מאכל."
+      },
+      "keywords": [
+        "unclog",
+        "unblock",
+        "clog",
+        "clogged",
+        "drain",
+        "plunger",
+        "סתימה",
+        "ניקוז"
+      ],
+      "url": "https://www.poison.org/articles/whats-in-drain-cleaner",
+      "publisher": "Poison Control"
     }
   ],
   "references": [

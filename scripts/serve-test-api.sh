@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 source "$(dirname "$0")/common.sh"
 export LLM_PROVIDER=fixture
+export OBJECT_DATA_MODE=fixture
 export QUESTION_COOLDOWN_SECONDS=0
 export TRANSLATION_PROVIDER=llm
 knowledge_port="$((${TEST_API_PORT:-8011} + 100))"

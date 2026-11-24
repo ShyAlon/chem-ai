@@ -66,6 +66,8 @@ class Provider(Protocol):
 class FixtureProvider:
     async def translate_to_english(self, text: str) -> str:
         translations = {
+            # Recorded Azure wording from the sink-blockage debug regression.
+            "איך אני פותח סתימה בכיור?": "How do I clear a clog in the sink?",
             "איך מנקים מסך זכוכית במטלית מיקרופייבר יבשה?":
                 "How do I clean a glass screen with a dry microfiber cloth?",
             "איך מנקים את מסך המחשב הנייד?": "How do I clean my laptop screen?",
@@ -100,15 +102,23 @@ class ModelProvider:
         self, text: str, output: type[Output], prompt: str, operation: str, version: str, max_tokens: int,
     ) -> Output:
         schema = output.model_json_schema()
-        with activity("model", f"llm.{operation}", provider=self.name, model=self.model, prompt_version=version):
+        with activity("model", f"llm.{operation}", provider=self.name, model=self.model, prompt_version=version) as operation_record:
             span = trace.get_current_span()
             span.set_attributes({"llm.provider": self.name, "llm.model": self.model, "prompt.version": version})
             try:
                 complete = self._ollama if self.name == "ollama" else self._deepseek
                 content = await complete(text, schema, prompt, max_tokens, span)
-                return output.model_validate_json(content)
+                validated = output.model_validate_json(content)
+                if isinstance(validated, SurfaceSuggestion):
+                    operation_record.debug["allowed_surfaces"] = sorted(REVIEWED_SURFACES.values())
+                    annotate(
+                        returned_surface=validated.surface, catalog_options=len(REVIEWED_SURFACES),
+                        result_code="no_catalog_match" if validated.surface == "unknown" else "catalog_match",
+                    )
+                return validated
             except (httpx.HTTPError, ValidationError, ValueError, KeyError, TypeError, StopIteration) as error:
                 span.set_status(trace.StatusCode.ERROR, type(error).__name__)
+                annotate(cause_type=type(error).__name__)
                 raise ProviderUnavailable from None
 
     async def _ollama(

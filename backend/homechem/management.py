@@ -1,9 +1,10 @@
 from dataclasses import asdict
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 
 from .activities import activity
+from .evidence import retrieve_evidence
 from .catalog import MaterialCatalog, MaterialDefinition, validate_material_references
 from .definitions import PROCEDURE_CATALOG, ProcedureCatalog, ProcedureDefinition, EvidenceSource
 from .application import SCENARIO_DEFINITIONS, ScenarioDefinition
@@ -14,6 +15,7 @@ from .lexicon import (
     SURFACE_EXCLUSIONS,
 )
 from .normalization import has_hebrew, words
+from .entities import CONFIG
 from .policy import POLICY_VERSION
 
 router = APIRouter(prefix="/api/management")
@@ -33,7 +35,8 @@ class ProcedureRule(BaseModel):
 
 class ProcedureRelation(BaseModel):
     object: str
-    material: str
+    material: str | None
+    intent: str = "clean"
     surface: str
     finishes: list[str | None]
     rules: list[ProcedureRule]
@@ -55,6 +58,7 @@ class ManagementCatalog(BaseModel):
     policy_version: str
     procedure_definitions: list[ProcedureDefinition]
     scenarios: list[ScenarioDefinition]
+    entity_sources: dict = Field(default_factory=dict)
     algorithm: list[str]
 
 
@@ -73,7 +77,7 @@ def catalog() -> ManagementCatalog:
         ],
         procedures=[
             ProcedureRelation(
-                object=entry.object, material=entry.material, surface=entry.surface,
+                object=entry.object, material=entry.material, intent=entry.intent, surface=entry.surface,
                 finishes=entry.finishes,
                 rules=[ProcedureRule(supplies=entry.supplies, rule=entry.id,
                                      source=entry.source, chemistry_source=entry.chemistry_source)],
@@ -83,15 +87,19 @@ def catalog() -> ManagementCatalog:
         policy_version=POLICY_VERSION,
         procedure_definitions=PROCEDURE_CATALOG.procedures,
         scenarios=SCENARIO_DEFINITIONS,
+        entity_sources={**CONFIG, "chemical_ontology": "ChEBI via official OLS MCP", "ontology_results": "candidates only; never policy approval"},
         algorithm=[
             "Hebrew detection → configured translator → English input",
             "Unicode normalization → possessive removal → tokenization → English stemming",
             "Cleaning supplies matched first and excluded from target matching",
-            "Objects and WordNet categories → device → substrate → finish → damage exclusions",
-            "Object/material phrase linking → reviewed surface and compatible finish",
+            "spaCy noun phrases → WordNet physical-object classes → catalog overlay",
+            "Specific material identity → explicit parent classes → finish → damage exclusions",
+            "Unknown substance modifiers → optional OLS MCP ChEBI candidates (5-second budget)",
+            "Task intent → object/material phrase linking, or a material-independent mechanical procedure",
             "Remaining words → supply combination or unknown",
+            "Shared MCP evidence search → matched sources, no matches, or unavailable",
             "Model fallback only for unresolved cleaning targets; no automatic approval",
-            "User confirmation → deterministic assessment over surface and supplies",
+            "User confirmation and required condition checks → deterministic intent/surface/supplies assessment",
         ],
     )
 
@@ -99,7 +107,7 @@ def catalog() -> ManagementCatalog:
 @router.post("/validate", operation_id="management_validate")
 def validate_catalog(data: MaterialCatalog) -> MaterialCatalog:
     try:
-        return validate_material_references(data, {entry.material for entry in PROCEDURE_CATALOG.procedures})
+        return validate_material_references(data, {entry.material for entry in PROCEDURE_CATALOG.procedures if entry.material is not None})
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from None
 
@@ -114,12 +122,18 @@ class DebugInput(BaseModel):
 
 
 @router.post("/resolve", operation_id="management_resolve")
-def debug_resolution(data: DebugInput) -> dict:
+async def debug_resolution(data: DebugInput, request: Request) -> dict:
     if has_hebrew(data.text):
         return {"requires_translation": True, "message": "Enter the English translation to inspect deterministic resolution."}
     with activity("normalization", "normalization.resolve"):
-        return {
+        result = {
             "requires_translation": False,
             "tokens": words(data.text), "noun_lemmas": words(data.text, nouns=True),
             "resolution": asdict(resolve(data.text)),
         }
+    resolved = result["resolution"]
+    object_client = getattr(request.app.state, "object_materials", None)
+    if resolved["object_query"] and object_client:
+        result["object_materials"] = await object_client.compare(resolved["object_query"], resolved["requested_component"])
+    result["evidence"] = await retrieve_evidence(getattr(request.app.state, "knowledge", None), data.text)
+    return result

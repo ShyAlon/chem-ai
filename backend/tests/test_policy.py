@@ -91,7 +91,7 @@ def test_azure_translates_hebrew_without_calling_an_llm():
     asyncio.run(run())
 
 
-def test_assessment_api_runs_without_an_mcp_server():
+def test_assessment_api_runs_without_an_mcp_server(evidence_client):
     from homechem.main import app
 
     async def run():

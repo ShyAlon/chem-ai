@@ -1,6 +1,7 @@
 import { requestJSON } from './api';
 import { InputFields } from './InputFields';
-import { useState } from 'react';
+import { RelatedEvidence } from './RelatedEvidence';
+import { useEffect, useState } from 'react';
 import type { Locale, Messages } from './i18n';
 import type { components } from './schema';
 
@@ -8,6 +9,14 @@ type Scenario = components['schemas']['ScenarioView'];
 
 export function UseCaseWorkspace({ entry, locale, t }: { entry: Scenario; locale: Locale; t: Messages }) {
   const [result, setResult] = useState('');
+  const [evidence, setEvidence] = useState<components['schemas']['EvidenceContext'] | null>(null);
+  useEffect(() => {
+    let active = true;
+    void requestJSON<components['schemas']['EvidenceContext']>(
+      `/api/scenarios/${entry.id}/evidence`, {}, entry.example[locale], 'scenario.evidence',
+    ).then(response => { if (active) setEvidence(response.data); }).catch(() => {});
+    return () => { active = false; };
+  }, [entry.id, locale]);
   const [failed, setFailed] = useState(false);
   const [busy, setBusy] = useState(false);
   async function submit(form: HTMLFormElement) {
@@ -18,6 +27,7 @@ export function UseCaseWorkspace({ entry, locale, t }: { entry: Scenario; locale
         `/api/scenarios/${entry.id}/evaluate`, { locale, values }, entry.example[locale], entry.id,
       );
       setResult(response.data.result);
+      setEvidence(response.data.evidence ?? null);
     } catch { setFailed(true); } finally { setBusy(false); }
   }
 
@@ -33,6 +43,7 @@ export function UseCaseWorkspace({ entry, locale, t }: { entry: Scenario; locale
     </form>}
     {result && <p role="status" className="confirmation">{result}</p>}
     {failed && <p role="alert">{t.error}</p>}
+    <RelatedEvidence evidence={evidence} locale={locale} t={t} />
     <h3>{t.scenarioWhy}</h3><p>{entry.why[locale]}</p>
     <p><a href={entry.source.url} target="_blank" rel="noreferrer">{t.scenarioSource} · {entry.source.title}</a></p>
   </section>;

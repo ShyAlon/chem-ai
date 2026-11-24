@@ -2,7 +2,7 @@
 
 HomeChem is an English/Hebrew household chemistry notebook with a React PWA and a FastAPI backend. The backend owns the catalogs, chemistry content, translations, matching rules, and calculations. React renders the content and actions returned by the API.
 
-Cleaning questions follow an English NLP resolver, user confirmation, and deterministic assessment through a direct Python call. Reviewed procedures cover intact glass tabletops, smooth glass screens, and everyday cleaning of glazed ceramic sinks and tile floors. Each procedure includes instructions, chemistry reasoning, and sources.
+Cleaning questions follow an English NLP resolver, user confirmation, and deterministic assessment through a direct Python call. Reviewed procedures cover intact glass tabletops, smooth glass screens, and everyday cleaning of glazed ceramic sinks and tile floors. Mechanical sink unclogging is also supported after explicit condition checks. Each procedure includes instructions, chemistry reasoning, and sources.
 
 Eight additional workspaces provide supported starter scenarios for stain removal, food science, limescale and corrosion, material care, water chemistry, home experiments, ingredient explanations, and chemical disposal. Water-hardness classification, experiment comparisons, and ingredient lookups run on the backend. These workspaces use explicit scenario selection; the free-text interpreter handles cleaning questions.
 
@@ -26,7 +26,7 @@ The PWA service worker runs in production builds and caches the app shell, stati
 
 | Script | Purpose |
 | --- | --- |
-| `scripts/bootstrap.sh` | Install dependencies from the lockfiles and fetch WordNet |
+| `scripts/bootstrap.sh` | Install locked dependencies (including spaCy model) and fetch WordNet |
 | `scripts/download-nlp-data.sh` | Fetch the WordNet corpus for the English resolver |
 | `scripts/dev.sh` | Run Vite, the API, and the MCP data service |
 | `scripts/serve-knowledge.sh [port]` | Run the standalone MCP chemistry-data service |
@@ -36,6 +36,7 @@ The PWA service worker runs in production builds and caches the app shell, stati
 | `scripts/test.sh` | Run Python tests; optional pytest arguments are forwarded |
 | `scripts/install-browser.sh` | Install Chromium for browser tests |
 | `scripts/browser-test.sh` | Build the PWA and run all browser tests against an isolated API with the fixture provider |
+| `scripts/test-sanity.sh` | Run the focused E2E sanity journey: review, approval, MCP trace, debug ZIP, and persisted Hebrew/RTL |
 | `scripts/test-management.sh` | Check types, build, and test the management workflow |
 | `scripts/test-use-cases.sh` | Check types, build, and test the scenario workspaces and calculators |
 | `scripts/import-materials.sh <file>` | Validate and atomically apply a material catalog export |
@@ -45,6 +46,8 @@ The PWA service worker runs in production builds and caches the app shell, stati
 | `scripts/build.sh` | Build the React PWA. With a registry prefix and SHA, build both deployment images |
 
 Browser tests launch their own API, fixture MCP data service, and preview server. The full suite uses API port 8011 and preview port 4173; management tests use 8012 and 4184; scenario tests use 8013 and 4183. To use an installed Chromium-compatible browser, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to its executable.
+
+For a quick sanity E2E, run `./scripts/test-sanity.sh`. It checks types, builds the PWA, starts isolated API/MCP/preview services on ports 8014/8114/4186, and runs a browser journey through question review, policy approval, chemistry reasoning, correlated MCP activity, debug ZIP download, and persisted Hebrew/RTL settings. Additional sanity cases cover lowercase “how do I clean my apple watch” (external lookup without a guessed material) and “how do I unclog my sink?” (mechanical procedure after all required conditions are confirmed). External providers use fixtures, so no API credentials or running Ollama instance are needed. Failures retain Playwright traces and screenshots under `web/test-results/`. This sanity test also runs as part of the full browser suite in CI.
 
 ## Architecture
 
@@ -74,8 +77,9 @@ flowchart LR
 
 | Backend catalog | Contents |
 | --- | --- |
-| `materials.json` | Material IDs, English/Hebrew labels, and English aliases |
-| `procedures.json` | Object/material relationships, compatible finishes, cleaning supplies, bilingual confirmations and steps, chemistry reasoning, sources, and hints |
+| `materials.json` | Specific material IDs, labels, aliases, explicit parent classes, and external IDs |
+| `entities.json` | spaCy model, WordNet physical-object roots, generic heads |
+| `procedures.json` | Task/object/material relationships, finishes, supplies, required checks, exclusions, bilingual steps, reasoning, sources, and hints |
 | `lexicon.json` | Object/device aliases, WordNet category roots, cleaning vocabulary, supply combinations, and exclusions |
 | `scenarios.json` | Scenario content, input definitions, calculation parameters, and result explanations |
 | `knowledge.json`, `research.json` | Cited evidence, reference measurements, and data-lab presentation definitions |
@@ -85,27 +89,33 @@ flowchart LR
 ### API flow
 
 1. `GET /api/catalog` supplies the content for the notebook, scenarios, and algorithm guide. `GET /api/hints` filters question suggestions on the server.
-2. `POST /api/interpret` translates Hebrew when needed, then runs the shared English resolver. Its response includes recognized details, localized confirmation fields, and an assessment action when the backend finds a supported match.
-3. After confirmation, `POST /api/assess` calls the instrumented Python assessment function directly. The response includes the decision, selected procedure content, sources, and policy version.
-4. `POST /api/scenarios/{id}/evaluate` validates measurements or selections against the scenario definition and returns a localized result. Classification thresholds, ratios, and ingredient lookups run on the server.
+2. `POST /api/interpret` translates Hebrew when needed, then runs the shared English resolver. It also searches for related evidence through MCP before any model fallback. Its response includes recognized details, resolution status, retrieved evidence status and sources, localized confirmation fields, and an assessment action when the backend finds a supported match.
+3. After confirmation, `POST /api/assess` calls the instrumented Python assessment function directly. The response includes the decision, selected procedure content, sources, policy version, and a supplementary MCP evidence result.
+4. `POST /api/scenarios/{id}/evaluate` validates measurements or selections against the scenario definition and returns a localized result. Classification thresholds, ratios, and ingredient lookups run on the server. Scenario exploration also calls `POST /api/scenarios/{id}/evidence`, including scenarios without calculators.
 
-English normalization uses NLTK stemming and WordNet categories. The LLM handles translation when configured and can suggest a surface for unresolved wording. Procedure approval comes from the deterministic policy.
+English normalization uses spaCy’s locked small English model for noun phrases, lemmas, modifiers, and grammatical targets, plus NLTK stemming and WordNet physical-object classes. Local aliases provide the application overlay rather than the complete object vocabulary. Specific materials retain their identity: porcelain is a distinct entity with a ceramic parent. Reviewed surface matching checks explicit ancestry, finish, and supply restrictions. The LLM handles translation when configured and can suggest a surface for unresolved wording. Procedure approval comes from the deterministic policy.
 
 The existing `/mcp` endpoint also exposes the assessment function to external clients. The web app uses the direct API-to-Python path. The backend also consumes chemistry data through a separate MCP data service.
 
 ### MCP data lab and activity traces
 
-Select **Data lab** to use three tools:
+Select **Data lab** to use five tools:
 
+- **Object material comparison** queries the free Wikidata and DBpedia APIs in parallel, displaying candidate entities, explicit material claims, missing data, and timing/cache information. No API key is needed.
+- **Chemical terminology** searches ChEBI through the official EMBL-EBI OLS MCP service and returns candidate labels, definitions, identifiers, and source links.
 - **Compound lookup** resolves an English compound name or CID through PubChem and returns identity, formula, molecular weight, and provenance.
 - **Chemistry evidence** searches curated bilingual summaries about surfactants, water hardness, and emulsions, with links to their sources.
 - **Experiment comparison** computes water density from measured mass and volume and compares it with a USGS reference at a selected temperature. The initial reference temperatures are 10, 21, and 26.7 °C.
+
+The API also connects directly to the official OLS MCP endpoint (`OLS_MCP_URL`, default `https://www.ebi.ac.uk/ols4/api/mcp`). Previously unknown substance modifiers can trigger a bounded five-second ChEBI lookup during interpretation. These results are candidates and never automatically set a substrate or authorize a procedure. The trace records searches and candidate IDs; the API and console summary retain the entity identities and candidates. English terms are sent to OLS, not the entire question. Run `./scripts/terminology-smoke.sh` for a live read-only check.
 
 The standalone data service publishes `lookup_compound`, `search_evidence`, and `get_reference`. The API validates MCP responses and caches successful results for one hour, up to 256 entries. PubChem lookup is live; evidence summaries and reference measurements are bundled, cited records. A retrieval timestamp records when the data service returned the record. Results can be exported as JSON for review.
 
 Open **Activity trace** to watch recorded server operations while a request runs. The timeline shows model/provider metadata and token usage when available, NLP, policy evaluation, calculations, MCP calls, cache hits, failures, and duration. Expand a step to inspect its metadata and use the request and trace IDs to find the server logs.
 
-The browser polls `GET /api/activities/{key}` using an unpredictable request capability key. Traces expire after ten minutes and the API retains at most 500 traces in memory. Raw prompts, credentials, and private model reasoning are excluded. The existing OpenTelemetry export remains available for persistent observability.
+The browser polls `GET /api/activities/{key}` using an unpredictable request capability key. Traces expire after ten minutes and the API retains at most 500 traces in memory. Client-visible debug sections include normalized input tokens, unmatched terms, and MCP search queries. Server logs and exported spans contain reason codes, counts, and operation metadata. Model prompts, credentials, and private model reasoning are excluded. The existing OpenTelemetry export remains available for persistent observability.
+
+The shared evidence stage also runs for the management resolver inspector. It reports `matched`, `no_matches`, or `unavailable`, with a four-second retrieval budget. Repeated lookups may show an MCP-data cache hit. Retrieved context supplements the catalog and does not independently approve procedures.
 
 ### Managing materials and procedures
 
@@ -118,7 +128,7 @@ Open **Management** at `/management` to inspect the active materials, dictionari
 
 Drafts remain in the page until exported. The import scripts validate before replacing files atomically. Materials referenced by procedures must remain in the catalog. Adding a procedure that uses existing algorithms requires catalog changes. New matching or calculation algorithms are implemented in the backend.
 
-See [architecture](docs/architecture.md) for more detail, [technologies used](docs/technologies.md) for the stack, [terminology](docs/terminology.md) for normalization, and the [experiments](docs/experiments.md) and [home solutions](docs/home-solutions.md) catalogs for supported activities.
+See the [terms and processes inventory](docs/terms-and-processes-inventory.md) for definitions, field meanings, algorithm ownership, and extension steps. See [architecture](docs/architecture.md) for more detail, [technologies used](docs/technologies.md) for the stack, [terminology](docs/terminology.md) for normalization, and the [experiments](docs/experiments.md) and [home solutions](docs/home-solutions.md) catalogs for supported activities.
 
 ### Instrumentation and rate limits
 
@@ -137,3 +147,23 @@ Once the repository exists:
 5. After the first deployment, run `scripts/provider-smoke.sh https://your.domain` to exercise DeepSeek and `scripts/mcp-smoke.sh https://your.domain/mcp` to exercise the public, read-only tool.
 
 The backend catalogs and evidence are bundled in the API image. Supabase-backed retrieval and the Molecule Explorer remain planned extensions.
+
+### Resolution diagnostics
+
+Interpretation responses and console summaries include normalized tokens, noun lemmas, per-category matches, unmatched terms, object/material linking, candidate surface, model-fallback eligibility, and reason codes. Final reason codes also record a model returning no catalog match and MCP evidence returning no matches or being unavailable.
+
+Expand an activity step to inspect these diagnostics. The evidence step reports the query, search method, documents searched, source IDs, match count, timeout budget, and any failure type. Model steps report the validated surface result, allowed catalog choices, provider/model, prompt version, and token usage when supplied. Console attempts include `traceId` and a direct `activityUrl` for correlation.
+
+### Download a debug bundle
+
+The lower-right button in **Activity trace** downloads a ZIP for the selected completed attempt, even when the timeline is collapsed. It contains `trace.json`, `requests.json` (API input/output and outbound HTTP metadata), `logs.jsonl` (correlated structured application events), and `manifest.json` (release, IDs, scope, exclusions, and capture limits). Failed attempts can also be exported. Original question text is included; authentication headers, raw model prompts/provider bodies, and remote process logs are excluded. Payloads over 32 KiB are explicitly omitted. The export uses the same private capability and ten-minute expiry as the trace.
+
+### Compare free object/material sources
+
+When a grammatical cleaning target has no stated material, the backend extracts an object/product query and any explicitly attached component. For example, “the screen of my Apple Watch” searches for **Apple Watch** with **screen** retained separately. Wikidata (`P186`, with `P518` component qualifiers) and DBpedia (`material` properties) run concurrently, each with a six-second budget and its own bounded one-hour cache. Results remain separate by provider; entity ambiguity, unspecified components, missing material data, and unavailable services are explicit. Product-level claims do not establish an exposed finish or authorize a cleaning procedure.
+
+Use **Data lab → Object material comparison**, the management resolver, or `./scripts/object-materials-smoke.sh 'Apple Watch' pencil` to compare sources. These are API integrations; OLS and the existing chemistry data service remain MCP integrations. See [source evaluation](docs/object-material-sources.md) for observed coverage.
+
+### Sink unclogging
+
+Ask “How do I unclog my sink?” (or “איך פותחים סתימה בכיור?”). The English resolver selects the distinct `unclog` intent and the catalog's mechanical sink-drain procedure; it does not infer a basin or pipe material. Confirm chemical-free history, a problem isolated to intact plumbing at one sink, and the required equipment/power isolation. All three checks are required by the server before instructions are returned. Chemical or plumbing-risk mentions block this offer. The procedure explains pressure-driven clearance and why acid–bicarbonate fizzing does not establish that a blockage dissolved. Definitions, conditions, instructions, evidence, and localized text remain in backend catalogs.

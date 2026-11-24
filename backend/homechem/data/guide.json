@@ -5,11 +5,15 @@
     "steps": [
       {
         "title": "Normalize the question",
-        "text": "Hebrew questions are translated into English first. Python then uses NLTK to normalize word forms and WordNet to recognize selected synonyms. English and translated questions follow the same checks."
+        "text": "Hebrew questions are translated into English first. spaCy extracts noun phrases, grammatical cleaning targets, and modifiers. NLTK normalizes word forms and WordNet classifies physical objects. English and translated questions follow the same algorithm."
       },
       {
         "title": "Identify the object and what it’s made of",
-        "text": "The resolver looks for the object, surface material, finish, and cleaning supplies separately. It checks whether the words for the object and material are linked in the question. When it can tell that no supplies were named, it marks them as unspecified."
+        "text": "The resolver looks for the object, surface material, finish, and cleaning supplies separately. It checks whether the words for the object and material are linked in the question. When it can tell that no supplies were named, it marks them as unspecified. Specific materials retain their identity and explicit parent classes: porcelain remains porcelain within ceramic. An object category never determines the exposed material. It distinguishes cleaning from unclogging. A material-independent mechanical drain method can require explicit conditions instead of a guessed basin material."
+      },
+      {
+        "title": "Retrieve related evidence through MCP",
+        "text": "The backend searches the MCP evidence library after normalization. It records matching sources, an empty result, or an unavailable service in the activity trace. Evidence supplements the reviewed catalog; a source match alone does not establish a supported procedure. Unknown substance descriptions can also be searched in ChEBI through the official OLS MCP service. Candidate identities are shown in the trace and never automatically approve a procedure."
       },
       {
         "title": "Handle unfamiliar surface wording",
@@ -53,11 +57,15 @@
     "steps": [
       {
         "title": "מנרמלים את השאלה",
-        "text": "שאלות בעברית מתורגמות תחילה לאנגלית. פייתון משתמשת ב־NLTK לנרמול צורות מילים וב־WordNet לזיהוי מילים נרדפות נבחרות. שאלות באנגלית ושאלות מתורגמות עוברות אותן בדיקות."
+        "text": "שאלות בעברית מתורגמות תחילה לאנגלית. spaCy מחלצת צירופי שמות עצם, את יעד הניקוי ואת התיאורים שלו. NLTK מנרמלת צורות מילים ו־WordNet מסווגת פריטים פיזיים. שאלות באנגלית ושאלות מתורגמות עוברות אותו אלגוריתם."
       },
       {
         "title": "מזהים את הפריט ואת החומר שממנו הוא עשוי",
-        "text": "המערכת מזהה בנפרד את הפריט, חומר המשטח, הגימור וחומרי הניקוי. היא בודקת שחומר המשטח אכן מתאר את הפריט. חומרי ניקוי שלא הוזכרו מסומנים כפרטים שלא צוינו."
+        "text": "המערכת מזהה בנפרד את הפריט, חומר המשטח, הגימור וחומרי הניקוי. היא בודקת שחומר המשטח אכן מתאר את הפריט. חומרי ניקוי שלא הוזכרו מסומנים כפרטים שלא צוינו. חומר מסוים שומר על זהותו ועל מחלקות האב המפורשות: פורצלן נשאר פורצלן בתוך משפחת הקרמיקה. קטגוריית פריט אינה קובעת את החומר החשוף. המערכת מבחינה בין ניקוי לפתיחת סתימה. שיטה מכאנית לניקוז יכולה לדרוש אישור תנאים מפורשים במקום לנחש את חומר אגן הכיור."
+      },
+      {
+        "title": "מאחזרים מקורות קשורים באמצעות MCP",
+        "text": "השרת מחפש בספריית המקורות דרך MCP אחרי הנרמול. מקורות תואמים, תוצאה ריקה או שירות שאינו זמין מתועדים בפעילות. המקורות משלימים את הקטלוג שנבדק; התאמה למקור לבדה אינה קובעת שיטה נתמכת. תיאורי חומרים לא מוכרים עשויים להישלח לחיפוש ב־ChEBI דרך שירות MCP הרשמי של OLS. מועמדים לזיהוי מוצגים בעקבות הפעילות ואינם מאשרים שיטה באופן אוטומטי."
       },
       {
         "title": "מטפלים בניסוח לא מוכר של המשטח",

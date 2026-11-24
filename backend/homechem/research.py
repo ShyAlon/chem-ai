@@ -1,9 +1,12 @@
 from typing import Literal
+from datetime import datetime, timezone
+from urllib.parse import quote
 
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field
 
 from .activities import activity
+from .terminology import lookup_terms
 from .definitions import read_data
 from .knowledge_client import KnowledgeClient, KnowledgeUnavailable
 from .presentation import DisplayField, InputField, Language
@@ -51,6 +54,10 @@ class EvidenceInput(BaseModel):
     query: str = Field(min_length=1, max_length=200)
 
 
+class ObjectInput(EvidenceInput):
+    component: str = Field(default="", max_length=80)
+
+
 class CompareInput(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
     mass_g: float = Field(ge=0.001, le=1000000)
@@ -59,13 +66,14 @@ class CompareInput(BaseModel):
 
 
 RESEARCH_DATA = read_data("research.json")
-INPUT_MODELS = {"compound": CompoundInput, "evidence": EvidenceInput, "compare": CompareInput}
+INPUT_MODELS = {"compound": CompoundInput, "evidence": EvidenceInput, "compare": CompareInput, "terminology": EvidenceInput, "object_materials": ObjectInput}
 REFERENCES = {item["id"]: item for item in read_data("knowledge.json")["references"]}
 for tool in RESEARCH_DATA["tools"]:
     properties = INPUT_MODELS[tool["id"]].model_json_schema()["properties"]
     for field in tool["fields"]:
         constraints = properties[field["id"]]
         field.update(
+            required=field["id"] in INPUT_MODELS[tool["id"]].model_json_schema().get("required", []),
             minimum=constraints.get("minimum"),
             maximum=constraints.get("maximum"),
             max_length=constraints.get("maxLength"),
@@ -85,10 +93,32 @@ def catalog() -> ResearchCatalog:
 
 
 @router.post("/{tool}", operation_id="research_evaluate")
-async def evaluate(tool: Literal["compound", "evidence", "compare"], data: ResearchInput, request: Request) -> ResearchResult:
+async def evaluate(tool: Literal["compound", "evidence", "compare", "terminology", "object_materials"], data: ResearchInput, request: Request) -> ResearchResult:
     labels = LABELS[data.locale]
     client: KnowledgeClient = request.app.state.knowledge
     try:
+        if tool == "object_materials":
+            inputs = ObjectInput.model_validate(data.values)
+            result = await request.app.state.object_materials.compare(inputs.query, inputs.component or None)
+            cards = []
+            for provider in result.providers:
+                cards.append(ResearchCard(title=provider.provider, text=labels["object_" + provider.status], fields=[
+                    DisplayField(label=labels["lookup_time"], value=f"{provider.elapsed_ms:g} ms"),
+                    DisplayField(label=labels["cache_hit"], value=str(provider.cached)),
+                ]))
+                for candidate in provider.candidates:
+                    cards.append(ResearchCard(title=candidate.label, text=candidate.description or labels["object_note"],
+                        fields=[DisplayField(label=labels["candidate_material"], value=claim.label + (f" ({claim.component})" if claim.component else " — " + labels["component_unknown"])) for claim in candidate.materials],
+                        provenance=Provenance(publisher=provider.provider, url=candidate.url, retrieved_at=provider.retrieved_at, mode=provider.mode)))
+            return ResearchResult(cards=cards)
+        if tool == "terminology":
+            inputs = EvidenceInput.model_validate(data.values)
+            results = await lookup_terms(request.app.state.terminology, inputs.query)
+            return ResearchResult(cards=[ResearchCard(
+                title=" / ".join(item.label), text=" ".join(item.definition),
+                fields=[DisplayField(label="ChEBI", value=item.curie)],
+                provenance=Provenance(publisher="EMBL-EBI OLS / ChEBI", url="https://www.ebi.ac.uk/ols4/ontologies/chebi/classes/" + quote(item.iri, safe=""), retrieved_at=datetime.now(timezone.utc).isoformat(), mode="live"),
+            ) for item in results.items])
         if tool == "compound":
             inputs = CompoundInput.model_validate(data.values)
             compound = await client.call("lookup_compound", {"query": inputs.query}, Compound)

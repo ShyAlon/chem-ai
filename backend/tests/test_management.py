@@ -28,13 +28,13 @@ def test_new_material_is_recognized_without_approving_a_procedure(monkeypatch):
     assert not result.allow_model
 
 
-def test_management_api_exposes_runtime_rules_validates_and_resolves():
+def test_management_api_exposes_runtime_rules_validates_and_resolves(evidence_client):
     async def exercise():
         async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
             response = await client.get("/api/management/catalog")
             assert response.status_code == 200
             data = response.json()
-            assert len(data["procedures"]) == 4
+            assert len(data["procedures"]) == 5
             assert "teaspoon" in data["object_categories"]["cutlery"]
             assert any(item["id"] == "ceramic" for item in data["materials"])
             assert (await client.post("/api/management/validate", json={"materials": data["materials"]})).status_code == 200

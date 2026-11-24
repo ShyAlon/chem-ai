@@ -11,12 +11,12 @@ import httpx
 from homechem.main import app
 
 
-def test_application_catalog_and_backend_scenario_validation():
+def test_application_catalog_and_backend_scenario_validation(evidence_client):
     async def exercise():
         async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
             catalog = (await client.get("/api/catalog")).json()
             assert len(catalog["scenarios"]) == 8
-            assert len(catalog["procedures"]) == 4
+            assert len(catalog["procedures"]) == 5
             assert catalog["procedures"][0]["he"]["steps"]
             hints = (await client.get("/api/hints", params={"text": "ceramic sink", "locale": "en"})).json()
             assert len(hints) == 1 and "ceramic sink" in hints[0]
@@ -58,7 +58,7 @@ assert view.assessment.surface == "test_glass_mirror_surface"
 decision = assess(AssessmentInput(**view.assessment.model_dump()))
 assert decision.status == "approved"
 assert decision.procedure["en"].title == "Catalog-only test"
-assert len(application_catalog().procedures) == 5
+assert len(application_catalog().procedures) == 6
 """
     env = {**os.environ, "PYTHONPATH": str(tmp_path), "NLTK_DATA": str(package.parent / ".nltk-data")}
     subprocess.run([sys.executable, "-c", code], cwd=tmp_path, env=env, check=True, capture_output=True, text=True)

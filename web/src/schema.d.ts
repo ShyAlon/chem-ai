@@ -123,6 +123,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/scenarios/{scenario_id}/evidence": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Scenario Evidence */
+        post: operations["scenario_evidence"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/activities/{key}": {
         parameters: {
             query?: never;
@@ -132,6 +149,23 @@ export interface paths {
         };
         /** Get Trace */
         get: operations["activity_trace"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/activities/{key}/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Download Trace */
+        get: operations["activity_download"];
         put?: never;
         post?: never;
         delete?: never;
@@ -208,6 +242,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/clarify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Clarify */
+        post: operations["clarify"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/assess": {
         parameters: {
             query?: never;
@@ -256,6 +307,10 @@ export interface components {
             /** Details */
             details?: {
                 [key: string]: string | number | boolean | null;
+            };
+            /** Debug */
+            debug?: {
+                [key: string]: string | string[];
             };
         };
         /** ActivityTrace */
@@ -306,8 +361,19 @@ export interface components {
             surface: string;
             /** Materials */
             materials: string;
+            /**
+             * Intent
+             * @default clean
+             */
+            intent: string;
             /** Confirmed */
             confirmed: boolean;
+            /** Checks */
+            checks?: {
+                [key: string]: boolean;
+            };
+            /** Context Id */
+            context_id?: string | null;
         };
         /** AssessmentPayload */
         AssessmentPayload: {
@@ -320,6 +386,22 @@ export interface components {
              * @default true
              */
             confirmed: boolean;
+            /**
+             * Intent
+             * @default clean
+             */
+            intent: string;
+            /** Context Id */
+            context_id?: string | null;
+        };
+        /** ClarifyInput */
+        ClarifyInput: {
+            /** Context Id */
+            context_id: string;
+            /** Answers */
+            answers: {
+                [key: string]: string;
+            };
         };
         /** Classification */
         Classification: {
@@ -355,6 +437,7 @@ export interface components {
             procedure?: {
                 [key: string]: components["schemas"]["ProcedureContent"];
             } | null;
+            evidence?: components["schemas"]["EvidenceContext"] | null;
         };
         /** DisplayField */
         DisplayField: {
@@ -362,6 +445,65 @@ export interface components {
             label: string;
             /** Value */
             value: string;
+        };
+        /** EntityReference */
+        EntityReference: {
+            /** Id */
+            id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "object" | "material";
+            /** Label */
+            label: string;
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "catalog" | "wordnet";
+            /** Classes */
+            classes?: string[];
+            /** Sense Ids */
+            sense_ids?: string[];
+            /** Modifiers */
+            modifiers?: string[];
+            /** External Ids */
+            external_ids?: {
+                [key: string]: string;
+            };
+        };
+        /** EvidenceContext */
+        EvidenceContext: {
+            /** Searched Documents */
+            searched_documents?: number | null;
+            /** Search Method */
+            search_method?: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "matched" | "no_matches" | "unavailable";
+            /** Message */
+            message: {
+                [key: string]: string;
+            };
+            /** Items */
+            items?: components["schemas"]["EvidenceItem"][];
+        };
+        /** EvidenceItem */
+        EvidenceItem: {
+            /** Id */
+            id: string;
+            /** Title */
+            title: {
+                [key: string]: string;
+            };
+            /** Summary */
+            summary: {
+                [key: string]: string;
+            };
+            provenance: components["schemas"]["Provenance"];
         };
         /** EvidenceSource */
         EvidenceSource: {
@@ -374,6 +516,19 @@ export interface components {
              * @enum {string}
              */
             language: "en" | "he";
+        };
+        /** FactRequirement */
+        FactRequirement: {
+            /** Predicate */
+            predicate: string;
+            /** Expected */
+            expected: string | boolean;
+            /** Check */
+            check?: string | null;
+            /** Question */
+            question: {
+                [key: string]: string;
+            };
         };
         /** GuideStep */
         GuideStep: {
@@ -416,6 +571,11 @@ export interface components {
              * @enum {string}
              */
             kind: "text" | "number" | "select";
+            /**
+             * Required
+             * @default true
+             */
+            required: boolean;
             /** Minimum */
             minimum?: number | null;
             /** Maximum */
@@ -443,6 +603,11 @@ export interface components {
             /** Materials */
             materials: string;
             /**
+             * Intent
+             * @default clean
+             */
+            intent: string;
+            /**
              * Method
              * @enum {string}
              */
@@ -465,6 +630,24 @@ export interface components {
             presentation?: {
                 [key: string]: components["schemas"]["ReviewView"];
             };
+            evidence?: components["schemas"]["EvidenceContext"] | null;
+            /** Entities */
+            entities?: components["schemas"]["EntityReference"][];
+            /** Terminology */
+            terminology?: components["schemas"]["OntologyResults"][];
+            object_materials?: components["schemas"]["ObjectMaterialsResult"] | null;
+            situation?: components["schemas"]["Situation"] | null;
+            /** Questions */
+            questions?: components["schemas"]["InputField"][];
+            /** Context Id */
+            context_id?: string | null;
+            diagnostics?: components["schemas"]["ResolutionDiagnostics"] | null;
+            /**
+             * Resolution Status
+             * @default unresolved
+             * @enum {string}
+             */
+            resolution_status: "ready_for_confirmation" | "needs_details" | "outside_catalog" | "unresolved";
         };
         /** @enum {string} */
         Language: "en" | "he";
@@ -524,6 +707,10 @@ export interface components {
             procedure_definitions: components["schemas"]["ProcedureDefinition"][];
             /** Scenarios */
             scenarios: components["schemas"]["ScenarioDefinition"][];
+            /** Entity Sources */
+            entity_sources?: {
+                [key: string]: unknown;
+            };
             /** Algorithm */
             algorithm: string[];
         };
@@ -532,6 +719,17 @@ export interface components {
             /** Materials */
             materials: components["schemas"]["MaterialDefinition"][];
         };
+        /** MaterialClaim */
+        MaterialClaim: {
+            /** Label */
+            label: string;
+            /** Source Id */
+            source_id: string;
+            /** Component */
+            component?: string | null;
+            /** References */
+            references?: string[];
+        };
         /** MaterialDefinition */
         MaterialDefinition: {
             /** Id */
@@ -539,6 +737,12 @@ export interface components {
             labels: components["schemas"]["MaterialLabels"];
             /** Aliases */
             aliases: string[];
+            /** Parents */
+            parents?: string[];
+            /** External Ids */
+            external_ids?: {
+                [key: string]: string;
+            };
         };
         /** MaterialLabels */
         MaterialLabels: {
@@ -547,10 +751,79 @@ export interface components {
             /** He */
             he: string;
         };
+        /** ObjectCandidate */
+        ObjectCandidate: {
+            /** Id */
+            id: string;
+            /** Label */
+            label: string;
+            /**
+             * Description
+             * @default
+             */
+            description: string;
+            /** Url */
+            url: string;
+            /** Materials */
+            materials?: components["schemas"]["MaterialClaim"][];
+        };
+        /** ObjectMaterialsResult */
+        ObjectMaterialsResult: {
+            /** Query */
+            query: string;
+            /** Component */
+            component?: string | null;
+            /** Providers */
+            providers: components["schemas"]["ProviderResult"][];
+            /**
+             * Requires Confirmation
+             * @default true
+             */
+            requires_confirmation: boolean;
+        };
+        /** OntologyParent */
+        OntologyParent: {
+            /** Iri */
+            iri: string;
+            /** Label */
+            label?: string[];
+        };
+        /** OntologyResults */
+        OntologyResults: {
+            /** Items */
+            items: components["schemas"]["OntologyTerm"][];
+        };
+        /** OntologyTerm */
+        OntologyTerm: {
+            /** Iri */
+            iri: string;
+            /** Curie */
+            curie: string;
+            /** Label */
+            label: string[];
+            /** Definition */
+            definition?: string[];
+            /**
+             * Isobsolete
+             * @default false
+             */
+            isObsolete: boolean;
+            /** Directparent */
+            directParent?: components["schemas"]["OntologyParent"][];
+        };
         /** ProcedureCatalog */
         ProcedureCatalog: {
             /** Procedures */
             procedures: components["schemas"]["ProcedureDefinition"][];
+        };
+        /** ProcedureCheck */
+        ProcedureCheck: {
+            /** Id */
+            id: string;
+            /** Label */
+            label: {
+                [key: string]: string;
+            };
         };
         /** ProcedureContent */
         ProcedureContent: {
@@ -566,6 +839,8 @@ export interface components {
             why: string;
             /** Hint */
             hint: string;
+            /** Blocked Reason */
+            blocked_reason?: string | null;
         };
         /** ProcedureDefinition */
         ProcedureDefinition: {
@@ -576,7 +851,16 @@ export interface components {
             /** Object */
             object: string;
             /** Material */
-            material: string;
+            material: string | null;
+            /**
+             * Intent
+             * @default clean
+             */
+            intent: string;
+            /** Checks */
+            checks?: components["schemas"]["ProcedureCheck"][];
+            /** Requirements */
+            requirements?: components["schemas"]["FactRequirement"][];
             /** Finishes */
             finishes: (string | null)[];
             /** Supplies */
@@ -593,7 +877,12 @@ export interface components {
             /** Object */
             object: string;
             /** Material */
-            material: string;
+            material: string | null;
+            /**
+             * Intent
+             * @default clean
+             */
+            intent: string;
             /** Surface */
             surface: string;
             /** Finishes */
@@ -623,6 +912,35 @@ export interface components {
              * @enum {string}
              */
             mode: "live" | "curated" | "fixture";
+        };
+        /** ProviderResult */
+        ProviderResult: {
+            /** Provider */
+            provider: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "matched" | "no_material_data" | "no_matches" | "unavailable";
+            /** Elapsed Ms */
+            elapsed_ms: number;
+            /**
+             * Cached
+             * @default false
+             */
+            cached: boolean;
+            /**
+             * Mode
+             * @default live
+             * @enum {string}
+             */
+            mode: "live" | "fixture";
+            /** Retrieved At */
+            retrieved_at: string;
+            /** Candidates */
+            candidates?: components["schemas"]["ObjectCandidate"][];
+            /** Reason */
+            reason?: string | null;
         };
         /** Ratio */
         Ratio: {
@@ -689,6 +1007,38 @@ export interface components {
             /** Fields */
             fields: components["schemas"]["InputField"][];
         };
+        /** ResolutionDiagnostics */
+        ResolutionDiagnostics: {
+            /** Tokens */
+            tokens: string[];
+            /** Noun Lemmas */
+            noun_lemmas: string[];
+            /** Matches */
+            matches: {
+                [key: string]: string[];
+            };
+            /** Unrecognized Tokens */
+            unrecognized_tokens: string[];
+            /** Target Linked */
+            target_linked: boolean;
+            /** Candidate Surface */
+            candidate_surface: string;
+            /** Model Fallback */
+            model_fallback: boolean;
+            /** Reason Codes */
+            reason_codes?: string[];
+            /** Noun Phrases */
+            noun_phrases?: string[];
+            /** Material Classes */
+            material_classes?: string[];
+        };
+        /** ReviewCheck */
+        ReviewCheck: {
+            /** Id */
+            id: string;
+            /** Label */
+            label: string;
+        };
         /** ReviewView */
         ReviewView: {
             /** Fields */
@@ -698,6 +1048,10 @@ export interface components {
             /** Accept */
             accept?: string | null;
             assessment?: components["schemas"]["AssessmentPayload"] | null;
+            /** Checks */
+            checks?: components["schemas"]["ReviewCheck"][];
+            /** Questions */
+            questions?: components["schemas"]["InputField"][];
         };
         /** ScenarioDefinition */
         ScenarioDefinition: {
@@ -730,6 +1084,7 @@ export interface components {
         ScenarioResult: {
             /** Result */
             result: string;
+            evidence?: components["schemas"]["EvidenceContext"] | null;
         };
         /** ScenarioSource */
         ScenarioSource: {
@@ -754,6 +1109,113 @@ export interface components {
             fields: components["schemas"]["InputField"][];
             submit: components["schemas"]["Text"];
         };
+        /** Situation */
+        Situation: {
+            /**
+             * Version
+             * @default 1
+             */
+            version: string;
+            /** Original Text */
+            original_text: string;
+            /** English Text */
+            english_text: string;
+            /**
+             * Source Language
+             * @default en
+             */
+            source_language: string;
+            /** Translation Provider */
+            translation_provider?: string | null;
+            /** Actions */
+            actions?: components["schemas"]["SituationAction"][];
+            /** Entities */
+            entities?: components["schemas"]["SituationEntity"][];
+            /** Relations */
+            relations?: components["schemas"]["SituationRelation"][];
+            /** Facts */
+            facts?: components["schemas"]["SituationFact"][];
+            /** Target Ids */
+            target_ids?: string[];
+            /** Ambiguities */
+            ambiguities?: string[];
+            /** Covered Positions */
+            covered_positions?: number[];
+            /** Ignored Positions */
+            ignored_positions?: number[];
+        };
+        /** SituationAction */
+        SituationAction: {
+            /** Intent */
+            intent: string;
+            /** Verb */
+            verb: string;
+            /**
+             * Modality
+             * @enum {string}
+             */
+            modality: "requested" | "historical" | "negated" | "uncertain";
+            evidence: components["schemas"]["TextSpan"];
+            /** Targets */
+            targets?: string[];
+        };
+        /** SituationEntity */
+        SituationEntity: {
+            /** Id */
+            id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "object" | "material" | "finish" | "product" | "tool" | "device" | "problem" | "condition";
+            /** Value */
+            value: string;
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "target" | "problem" | "supply" | "context" | "attribute";
+            evidence: components["schemas"]["TextSpan"];
+        };
+        /** SituationFact */
+        SituationFact: {
+            /** Subject */
+            subject: string;
+            /** Predicate */
+            predicate: string;
+            /** Value */
+            value: string | boolean;
+            /**
+             * Polarity
+             * @default affirmed
+             * @enum {string}
+             */
+            polarity: "affirmed" | "negated" | "uncertain";
+            /**
+             * Time
+             * @default current
+             * @enum {string}
+             */
+            time: "past" | "current" | "proposed" | "unknown";
+            /**
+             * Origin
+             * @default stated
+             * @enum {string}
+             */
+            origin: "stated" | "inferred" | "clarification";
+            /** Evidence */
+            evidence?: components["schemas"]["TextSpan"][];
+        };
+        /** SituationRelation */
+        SituationRelation: {
+            /** Subject */
+            subject: string;
+            /** Predicate */
+            predicate: string;
+            /** Object */
+            object: string;
+            evidence: components["schemas"]["TextSpan"];
+        };
         /**
          * Status
          * @enum {string}
@@ -768,6 +1230,15 @@ export interface components {
         };
         Text: {
             [key: string]: string;
+        };
+        /** TextSpan */
+        TextSpan: {
+            /** Start */
+            start: number;
+            /** End */
+            end: number;
+            /** Text */
+            text: string;
         };
         /** ValidationError */
         ValidationError: {
@@ -999,6 +1470,37 @@ export interface operations {
             };
         };
     };
+    scenario_evidence: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                scenario_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvidenceContext"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     activity_trace: {
         parameters: {
             query?: never;
@@ -1017,6 +1519,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ActivityTrace"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    activity_download: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/zip": string;
                 };
             };
             /** @description Validation Error */
@@ -1055,7 +1588,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                tool: "compound" | "evidence" | "compare";
+                tool: "compound" | "evidence" | "compare" | "terminology" | "object_materials";
             };
             cookie?: never;
         };
@@ -1117,6 +1650,39 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["InterpretInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    clarify: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ClarifyInput"];
             };
         };
         responses: {

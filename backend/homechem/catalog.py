@@ -19,6 +19,8 @@ class MaterialDefinition(BaseModel):
     id: str = Field(pattern=r"^[a-z][a-z0-9_]{0,63}$")
     labels: MaterialLabels
     aliases: list[str] = Field(min_length=1, max_length=50)
+    parents: list[str] = Field(default_factory=list)
+    external_ids: dict[str, str] = Field(default_factory=dict)
 
 
 class MaterialCatalog(BaseModel):
@@ -42,6 +44,18 @@ class MaterialCatalog(BaseModel):
                 if normalized in owners and owners[normalized] != material.id:
                     raise ValueError(f"Alias collision: {alias}")
                 owners[normalized] = material.id
+        by_id = {item.id: item for item in self.materials}
+        for material in self.materials:
+            if len(set(material.parents)) != len(material.parents) or any(parent not in by_id for parent in material.parents):
+                raise ValueError("Material parents must be unique existing IDs")
+            pending, visited = list(material.parents), set()
+            while pending:
+                parent = pending.pop()
+                if parent == material.id:
+                    raise ValueError("Material hierarchy must not contain cycles")
+                if parent not in visited:
+                    visited.add(parent)
+                    pending.extend(by_id[parent].parents)
         return self
 
 

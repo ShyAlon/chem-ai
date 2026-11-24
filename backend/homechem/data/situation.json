@@ -1,0 +1,98 @@
+{
+  "context_prepositions": [
+    "near",
+    "beside",
+    "behind",
+    "under",
+    "above",
+    "next"
+  ],
+  "history_actions": [
+    "use",
+    "add",
+    "pour",
+    "apply",
+    "try",
+    "put",
+    "mix"
+  ],
+  "uncertainty_terms": [
+    "maybe",
+    "perhaps",
+    "unsure",
+    "unknown",
+    "possibly"
+  ],
+  "proposal_actions": [
+    "consider",
+    "plan",
+    "intend",
+    "think"
+  ],
+  "risk_facts": {
+    "chemical_free": {
+      "terms": [
+        "drain cleaner",
+        "drain opener",
+        "caustic soda",
+        "sodium hydroxide",
+        "sulfuric acid",
+        "hydrochloric acid",
+        "bleach",
+        "vinegar",
+        "baking soda"
+      ],
+      "requires_history": true
+    },
+    "isolated_intact": {
+      "terms": [
+        "sewage",
+        "leaking",
+        "leak",
+        "corroded",
+        "multiple drains",
+        "several drains"
+      ],
+      "requires_history": false
+    }
+  },
+  "questions": {
+    "material": {
+      "en": "What material is exposed on the area you want to clean?",
+      "he": "איזה חומר חשוף באזור שברצונך לנקות?"
+    },
+    "target": {
+      "en": "Which object should this procedure address?",
+      "he": "לאיזה פריט השיטה צריכה להתייחס?"
+    },
+    "unknown": {
+      "en": "I don't know",
+      "he": "לא ידוע לי"
+    },
+    "other": {
+      "en": "Another material",
+      "he": "חומר אחר"
+    },
+    "answer": {
+      "en": "Update these details",
+      "he": "עדכון הפרטים"
+    }
+  },
+  "presence_actions": [
+    "be",
+    "contain",
+    "remain"
+  ],
+  "availability_actions": [
+    "have",
+    "own",
+    "possess"
+  ],
+  "tool_ids": [
+    "mop",
+    "microfiber",
+    "dry_microfiber",
+    "soft_cloth",
+    "plunger"
+  ]
+}

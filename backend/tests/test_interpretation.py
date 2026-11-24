@@ -25,7 +25,7 @@ from homechem.policy import Surface
     ("Clean the glass table with water, a microfiber cloth, and PurpleMagic",
      "glass_tabletop", "unknown", "glass_tabletop"),
     ("Clean glass table with water and microfiber cloth, without bleach",
-     "glass_tabletop", "unknown", "glass_tabletop"),
+     "glass_tabletop", "water_and_microfiber_only", "glass_tabletop"),
     ("Clean the glass table with water", "glass_tabletop", "unknown", "glass_tabletop"),
 ])
 def test_lexicon_resolution(text, surface, materials, term):
@@ -53,13 +53,13 @@ def test_cutlery_category_uses_wordnet_object_senses(text, object_type):
 @pytest.mark.parametrize(("text", "object_type", "substrate", "finish", "surface", "materials"), [
     ("I want to clean my ceramic floor", "floor", "ceramic", None, "ceramic_tile_floor", "not_stated"),
     ("Clean my glazed porcelain tile floor with water and a microfiber mop",
-     "floor", "ceramic", "glazed", "ceramic_tile_floor", "water_and_mop_only"),
+     "floor", "porcelain", "glazed", "ceramic_tile_floor", "water_and_mop_only"),
     ("Wiping glazed ceramic floor tiles with water and a mop",
      "floor", "ceramic", "glazed", "ceramic_tile_floor", "water_and_mop_only"),
     ("Clean the unglazed ceramic floor", "floor", "ceramic", "unglazed", "unknown", "not_stated"),
     ("Clean a ceramic sink with glass cleaner", "sink", "ceramic", None, "ceramic_sink", "unknown"),
     ("Clean my ceramic", None, "ceramic", None, "unknown", "not_stated"),
-    ("Clean ceramic on my floor", "floor", "ceramic", None, "unknown", "not_stated"),
+    ("Clean ceramic on my floor", "floor", None, None, "unknown", "not_stated"),
     ("Clean the floor with water and a mop", "floor", None, None, "unknown", "water_and_mop_only"),
     ("Clean my ceramic and vinyl floor", "floor", None, None, "unknown", "not_stated"),
 ])
@@ -107,7 +107,7 @@ def test_screens_and_devices_are_matched_separately(text, device, surface, finis
     assert not result.allow_model
 
 
-def test_question_cooldown_and_provider_budget(monkeypatch):
+def test_question_cooldown_and_provider_budget(monkeypatch, evidence_client):
     monkeypatch.setenv("LLM_PROVIDER", "fixture")
     monkeypatch.setenv("TRANSLATION_PROVIDER", "llm")
     monkeypatch.setenv("LLM_REQUESTS_PER_MINUTE", "1")
@@ -128,9 +128,9 @@ def test_question_cooldown_and_provider_budget(monkeypatch):
             app.state.provider.suggest_surface = suggest
 
             unclear = await post("192.0.2.1", "unclear")
-            assert {key: value for key, value in unclear.json().items() if key != "presentation"} == {
+            assert {key: value for key, value in unclear.json().items() if key not in {"presentation", "evidence", "resolution_status", "diagnostics", "entities", "terminology", "object_materials"}} == {
                 "surface": "unknown", "materials": "unknown", "method": "dictionary", "surface_term": None,
-                "object_type": None, "device": None, "substrate": None, "finish": None, "translated_text": None, "translation_provider": None,
+                "intent": "clean", "object_type": None, "device": None, "substrate": None, "finish": None, "translated_text": None, "translation_provider": None,
             }
             assert unclear.headers["x-request-id"]
             assert unclear.headers["cache-control"] == "no-store"
@@ -141,9 +141,9 @@ def test_question_cooldown_and_provider_budget(monkeypatch):
             assert same_ip.headers["retry-after"] == "10"
 
             fallback = await post("192.0.2.2", "Clean my transparent dining surface")
-            assert {key: value for key, value in fallback.json().items() if key != "presentation"} == {
+            assert {key: value for key, value in fallback.json().items() if key not in {"presentation", "evidence", "resolution_status", "diagnostics", "entities", "terminology", "object_materials"}} == {
                 "surface": "glass_tabletop", "materials": "unknown", "method": "model",
-                "surface_term": "glass_tabletop", "object_type": None, "device": None, "substrate": None, "finish": None, "translated_text": None, "translation_provider": None,
+                "surface_term": "glass_tabletop", "intent": "clean", "object_type": None, "device": None, "substrate": None, "finish": None, "translated_text": None, "translation_provider": None,
             }
             blocked = await post("192.0.2.3", "Clean my other transparent surface")
             assert blocked.status_code == 429
@@ -194,3 +194,25 @@ def test_question_cooldown_and_provider_budget(monkeypatch):
 
 
     asyncio.run(run())
+
+
+def test_wordnet_recognizes_keyboard_without_guessing_material():
+    result = resolve("How should I clean my mac keyboard")
+    diagnostics = result.diagnostics
+    assert diagnostics.unrecognized_tokens == ["mac"]
+    assert diagnostics.matches["objects"] == ["keyboard"]
+    assert diagnostics.matches["substrates"] == []
+    assert not diagnostics.model_fallback
+    assert "material_not_identified" in diagnostics.reason_codes
+    assert result.entities[0].source == "wordnet"
+    assert result.entities[0].modifiers == ["mac"]
+    assert result.interpretation.surface == "unknown"
+
+
+def test_diagnostics_identify_finish_and_supply_restrictions():
+    result = resolve("Clean my coated glass table with vinegar")
+    assert result.diagnostics.candidate_surface == "glass_tabletop"
+    assert result.diagnostics.target_linked
+    assert result.diagnostics.matches["finishes"] == ["coated"]
+    assert "unsupported_finish" in result.diagnostics.reason_codes
+    assert "supplies_unverified" in result.diagnostics.reason_codes

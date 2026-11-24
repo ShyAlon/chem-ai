@@ -38,10 +38,11 @@ export function Management({ locale, messages }: { locale: Locale; messages: Rec
     <p>{t.recognized} · {catalog.policy_version}</p>
     {error && <p role="alert" className="notice">{error}</p>}
     {notice && <p role="status" className="notice">{notice}</p>}
+    <section className="panel"><h2>{t.entitySources}</h2><pre dir="ltr">{JSON.stringify(catalog.entity_sources, null, 2)}</pre></section>
     <section className="panel">
       <h2>{t.materials}</h2>
-      <div className="table-scroll"><table><thead><tr><th>{t.id}</th><th>{t.en}</th><th>{t.he}</th><th>{t.aliases}</th></tr></thead>
-        <tbody>{catalog.materials.map(material => <tr key={material.id}><td><code>{material.id}</code></td><td>{material.labels.en}</td><td dir="rtl">{material.labels.he}</td><td>{material.aliases.join(', ')}</td></tr>)}</tbody>
+      <div className="table-scroll"><table><thead><tr><th>{t.id}</th><th>{t.en}</th><th>{t.he}</th><th>{t.aliases}</th><th>{t.parents}</th></tr></thead>
+        <tbody>{catalog.materials.map(material => <tr key={material.id}><td><code>{material.id}</code></td><td>{material.labels.en}</td><td dir="rtl">{material.labels.he}</td><td>{material.aliases.join(', ')}</td><td>{material.parents?.join(', ')}</td></tr>)}</tbody>
       </table></div>
       <h3>{t.add}</h3>
       <form className="management-form" onSubmit={event => {
@@ -49,7 +50,7 @@ export function Management({ locale, messages }: { locale: Locale; messages: Rec
         const fields = new FormData(event.currentTarget);
         try {
           const entries = JSON.parse(draft) as Material[];
-          entries.push({ id: String(fields.get('id')), labels: { en: String(fields.get('en')), he: String(fields.get('he')) }, aliases: String(fields.get('aliases')).split('\n').map(alias => alias.trim()).filter(Boolean) });
+          entries.push({ id: String(fields.get('id')), labels: { en: String(fields.get('en')), he: String(fields.get('he')) }, parents: String(fields.get('parents') ?? '').split(',').map(value => value.trim()).filter(Boolean), aliases: String(fields.get('aliases')).split('\n').map(alias => alias.trim()).filter(Boolean) });
           setDraft(JSON.stringify(entries, null, 2));
           setNotice(t.save);
           event.currentTarget.reset();
@@ -58,6 +59,7 @@ export function Management({ locale, messages }: { locale: Locale; messages: Rec
         <label>{t.id}<input name="id" dir="ltr" pattern="[a-z][a-z0-9_]*" maxLength={64} required /></label>
         <label>{t.en}<input name="en" maxLength={100} required /></label>
         <label>{t.he}<input name="he" dir="rtl" maxLength={100} required /></label>
+        <label>{t.parents}<input name="parents" dir="ltr" /></label>
         <label>{t.aliases}<textarea name="aliases" dir="ltr" required rows={3} /></label>
         <button className="primary" disabled={busy}>{t.save}</button>
       </form>
@@ -73,8 +75,8 @@ export function Management({ locale, messages }: { locale: Locale; messages: Rec
     </section>
     <section className="panel">
       <h2>{t.procedures}</h2>
-      <div className="table-scroll"><table><thead><tr><th>{t.object}</th><th>{t.material}</th><th>{t.surface}</th><th>{t.finishes}</th></tr></thead>
-        <tbody>{catalog.procedures.map(procedure => <tr key={procedure.surface}><td>{procedure.object}</td><td>{procedure.material}</td><td>{procedure.surface}</td><td>{procedure.finishes.map(finish => finish ?? '∅').join(', ')}</td></tr>)}</tbody>
+      <div className="table-scroll"><table><thead><tr><th>{t.intent}</th><th>{t.object}</th><th>{t.material}</th><th>{t.surface}</th><th>{t.finishes}</th></tr></thead>
+        <tbody>{catalog.procedures.map(procedure => <tr key={procedure.surface}><td>{procedure.intent}</td><td>{procedure.object}</td><td>{procedure.material ?? '∅'}</td><td>{procedure.surface}</td><td>{procedure.finishes.map(finish => finish ?? '∅').join(', ')}</td></tr>)}</tbody>
       </table></div>
       <p>{t.procedureInstructions}</p>
       <label htmlFor="procedure-draft">{t.procedureDraft}</label>

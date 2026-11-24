@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { RelatedEvidence } from './RelatedEvidence';
 import type { Locale, Messages } from './i18n';
 import type { components } from './schema';
 
@@ -13,7 +14,9 @@ export function LanguageSwitch({ locale, choose, t }: { locale: Locale; choose: 
   );
 }
 
-export function Evidence({ t, decision, requestId, interpretationId }: {
+export function Evidence({ t, decision, requestId, interpretationId, related, locale }: {
+  related?: components['schemas']['EvidenceContext'] | null;
+  locale: Locale;
   t: Messages;
   decision: Decision | null;
   requestId: string | null;
@@ -33,7 +36,8 @@ export function Evidence({ t, decision, requestId, interpretationId }: {
             <dt>{t.version}</dt><dd><bdi>{decision.version}</bdi></dd>
           </dl>
         </>
-      ) : <p>{t.emptyEvidence}</p>}
+      ) : !related && <p>{t.emptyEvidence}</p>}
+      <RelatedEvidence evidence={related} locale={locale} t={t} />
       {requestId && (
         <div className="request">
           <small>{t.request}</small><code dir="ltr">{requestId}</code>

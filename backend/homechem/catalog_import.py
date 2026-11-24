@@ -32,7 +32,7 @@ def main():
         entries = json.loads(args.file.read_text())
         if args.kind == "materials":
             catalog = validate_material_references(
-                MaterialCatalog(materials=entries), {entry.material for entry in PROCEDURE_DEFINITIONS},
+                MaterialCatalog(materials=entries), {entry.material for entry in PROCEDURE_DEFINITIONS if entry.material is not None},
             )
             validated = catalog.materials
             destination = MATERIALS_PATH
